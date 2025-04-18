@@ -49,7 +49,22 @@
                 font-weight: bold;
             }
 
+            .position-relative {
+            position: relative;
+            }
 
+            .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff3366;
+            color: white;
+            border-radius: 50%;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            min-width: 1.2rem;
+            text-align: center;
+            }
             .fa-shopping-cart{
                 color:#f3e3d0;
                 
@@ -63,6 +78,13 @@
 
             .btn-delifesti:hover {
                 background-color: #502b02;
+            }
+
+            .btn-spacing {
+            margin-right: 5px; 
+            margin-left: 5px; 
+            width: 80px; 
+            height: 60px;
             }
 
             .pagination .page-link{
@@ -89,6 +111,8 @@
                 height: 100%;
                 object-fit:cover; 
             }
+
+            
 
 
         </style>
@@ -125,6 +149,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="orders.html">Pedidos</a>
+                                <a class="nav-link" href="orders.html">Chat</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a
@@ -161,21 +186,30 @@
 
                             <button 
 
-                                class="btn btn-delifesti me-sm-2"
+                                class="btn btn-delifesti my-2 my-sm-0 btn-spacing "
                                 type="button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#loginModal"
+                                
                             >
                             <a href="#"><i class="fas fa-user"> Cuenta</i></a>
                             </button>
 
                             <button 
 
-                                class="btn btn-delifesti my-2 my-sm-0"
+                                class="btn btn-delifesti my-2 my-sm-0 btn-spacing"
                                 type="button"
                             >
                             <a href="shopping_cart.html"><i class="fas fa-shopping-cart"> Carrito</i></a>
                             </button>
+                            
+                            <a href="notifications.html">
+                                <button class="btn btn-delifesti my-2 my-sm-0 position-relative btn-spacing " type="button">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="notification-badge">3</span> 
+                                </button>
+                            </a>
+                    </form>
                         </form>
                     </div>
                 </div>
