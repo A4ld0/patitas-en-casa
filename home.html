@@ -2,14 +2,14 @@
 <html lang="en">
     <head>
         <title>Patitas en Casa</title>
-        <!-- Required meta tags -->
+        <!-- meta tags -->
         <meta charset="utf-8" />
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
 
-        <!-- Bootstrap CSS v5.2.1 -->
+        <!-- Bootstrap -->
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -113,6 +113,11 @@
             }
 
             
+            .btn-adoptar {
+                background-color: #5a320e;
+                color: white;
+                border: none;
+            }
 
 
         </style>
@@ -122,97 +127,117 @@
     </head>
 
     <body>
-        <header >
-            <nav
-                class="navbar navbar-expand-lg navbar-light "
-            >
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="home.html"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDS2L1lcq2WKlLfrvJB-fhIGMD3P2fyFkFXQ&s" alt="" class="logo-pequeño">    Patitas en Casa</a>
-                    <button
-                        class="navbar-toggler d-lg-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapsibleNavId"
-                        aria-controls="collapsibleNavId"
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="home.html">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDS2L1lcq2WKlLfrvJB-fhIGMD3P2fyFkFXQ&s"
+                    alt=""
+                    class="logo-pequeño"
+                  >
+                  Patitas en Casa
+                </a>
+                <button
+                  class="navbar-toggler d-lg-none"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapsibleNavId"
+                  aria-controls="collapsibleNavId"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                  <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="home.html" aria-current="page">
+                        Inicio
+                        <span class="visually-hidden">(current)</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="orders.html">Adopciones</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="dropdownId"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
                         aria-expanded="false"
-                        aria-label="Toggle navigation"
+                      >Filtro</a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="home.html">Todos</a>
+                        <a class="dropdown-item" href="panaderia.html">Perros</a>
+                        <a class="dropdown-item" href="panaderia.html">Gatos</a>
+                      </div>
+                    </li>
+                  </ul>
+                  <form class="d-flex my-2 my-lg-0" id="busqueda">
+                    <input
+                      class="form-control me-sm-2"
+                      type="text"
+                      placeholder="Buscar"
+                    />
+                    <button
+                      class="btn btn-delifesti my-2 my-sm-0 btn-spacing"
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#loginModal"
                     >
-                        <span class="navbar-toggler-icon"></span>
+                      <i class="fas fa-user"></i> Cuenta
                     </button>
-                    <div class="collapse navbar-collapse" id="collapsibleNavId">
-                        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="home.html" aria-current="page"
-                                    >Inicio
-                                    <span class="visually-hidden">(current)</span></a
-                                >
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="orders.html">Adopciones</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a
-                                    class="nav-link dropdown-toggle"
-                                    href="#"
-                                    id="dropdownId"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >Filtro</a
-                                >
-                                <div
-                                    class="dropdown-menu"
-                                    aria-labelledby="dropdownId"
-                                >
-                                    <a class="dropdown-item" href="home.html"
-                                        >Todos</a
-                                    >
-                                    <a class="dropdown-item" href="panaderia.html" #Modificar link
-                                        >Perros</a
-                                    >
-                                    <a class="dropdown-item" href="panaderia.html" #Modificar Link
-                                        >Gatos</a
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-                        <form class="d-flex my-2 my-lg-0" id="busqueda">
-                            <input
-                                class="form-control me-sm-2"
-                                type="text"
-                                placeholder="Buscar"
-                            />
-
-                            <button 
-
-                                class="btn btn-delifesti my-2 my-sm-0 btn-spacing "
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#loginModal"
-                                
-                            >
-                            <a href="#"><i class="fas fa-user"> Cuenta</i></a>
-                            </button>
-
-                            <button 
-                                class="btn btn-delifesti my-2 my-sm-0" 
-                                type="button"
-                                onclick="window.location.href='shopping_cart.html'"
-                                >
-                                <i class="fas fa-paw"></i> Subir mascota
-                            </button>
-                            
-                            <a href="notifications.html">
-                                <button class="btn btn-delifesti my-2 my-sm-0 position-relative btn-spacing " type="button">
-                                    <i class="fas fa-bell"></i>
-                                    <span class="notification-badge">3</span> 
-                                </button>
-                            </a>
-                    </form>
-                        </form>
-                    </div>
+                    <button
+                    id="perfilBtn"
+                    type="button"
+                    class="btn btn-delifesti me-3"
+                    style="display: none;"
+                    data-bs-toggle="modal"
+                    data-bs-target="#profileModal"
+                    >
+                    <i class="fas fa-user-cog"></i>
+                    </button>
+                    <button
+                      class="btn btn-delifesti my-2 my-sm-0"
+                      type="button"
+                      onclick="window.location.href='shopping_cart.html'"
+                    >
+                      <i class="fas fa-paw"></i> Subir mascota
+                    </button>
+                    <a href="alarmas.html">
+                      <button
+                        class="btn btn-delifesti my-2 my-sm-0 position-relative btn-spacing"
+                        type="button"
+                      >
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="badge-count">0</span>
+                      </button>
+                    </a>
+                  </form>
                 </div>
+              </div>
             </nav>
+        </header>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              // Leer array de alarmas (o crear array vacío si no existe)
+              const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
+              // Actualizar el badge en la campana
+              const badge = document.getElementById('badge-count');
+              badge.textContent = alarmas.length;
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+            const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
+            document.getElementById('badge-count').textContent = alarmas.length;
+            });
+        </script>
 
 <!-- Carrusel -->
             <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
@@ -311,9 +336,14 @@
                           </div>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="btn" style="background-color: #5a320e; color: white;" data-bs-toggle="modal" data-bs-target="#adopcionModal">
-                              INICIAR PROCESO DE ADOPCIÓN
-                            </a>
+                            <button
+                                type="button"
+                                class="btn btn-adoptar"
+                                data-bs-toggle="modal"
+                                data-bs-target="#adopcionModal"
+                                >
+                                INICIAR PROCESO DE ADOPCIÓN
+                            </button>
                         </div>
                       </div>
                     </div>
@@ -346,9 +376,15 @@
                           </div>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="btn" style="background-color: #5a320e; color: white;" data-bs-toggle="modal" data-bs-target="#adopcionModal">
-                              INICIAR PROCESO DE ADOPCIÓN
-                            </a>
+                            <button
+                                type="button"
+                                class="btn btn-adoptar"
+                                data-bs-toggle="modal"
+                                data-bs-target="#adopcionModal"
+                                >
+                                INICIAR PROCESO DE ADOPCIÓN
+                            </button>
+
                         </div>
                       </div>
                     </div>
@@ -380,9 +416,14 @@
                           </div>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="btn" style="background-color: #5a320e; color: white;" data-bs-toggle="modal" data-bs-target="#adopcionModal">
-                              INICIAR PROCESO DE ADOPCIÓN
-                            </a>
+                            <button
+                            type="button"
+                            class="btn btn-adoptar"
+                            data-bs-toggle="modal"
+                            data-bs-target="#adopcionModal"
+                            >
+                            INICIAR PROCESO DE ADOPCIÓN
+                        </button>
                         </div>
                       </div>
                     </div>
@@ -414,9 +455,14 @@
                           </div>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="btn" style="background-color: #5a320e; color: white;" data-bs-toggle="modal" data-bs-target="#adopcionModal">
-                              INICIAR PROCESO DE ADOPCIÓN
-                            </a>
+                            <button
+                            type="button"
+                            class="btn btn-adoptar"
+                            data-bs-toggle="modal"
+                            data-bs-target="#adopcionModal"
+                            >
+                            INICIAR PROCESO DE ADOPCIÓN
+                        </button>
                         </div>
                       </div>
                     </div>
@@ -448,9 +494,14 @@
                           </div>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="btn" style="background-color: #5a320e; color: white;" data-bs-toggle="modal" data-bs-target="#adopcionModal">
-                              INICIAR PROCESO DE ADOPCIÓN
-                            </a>
+                            <button
+                            type="button"
+                            class="btn btn-adoptar"
+                            data-bs-toggle="modal"
+                            data-bs-target="#adopcionModal"
+                            >
+                            INICIAR PROCESO DE ADOPCIÓN
+                        </button>
                         </div>
                       </div>
                     </div>
@@ -482,9 +533,14 @@
                           </div>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="btn" style="background-color: #5a320e; color: white;" data-bs-toggle="modal" data-bs-target="#adopcionModal">
-                              INICIAR PROCESO DE ADOPCIÓN
-                            </a>
+                            <button
+                            type="button"
+                            class="btn btn-adoptar"
+                            data-bs-toggle="modal"
+                            data-bs-target="#adopcionModal"
+                            >
+                            INICIAR PROCESO DE ADOPCIÓN
+                        </button>
                         </div>
                       </div>
                     </div>
@@ -571,18 +627,9 @@
             </div>
         </div>
         
-        <!-- Optional: Place to the bottom of scripts -->
-        <script>
-            const myModal = new bootstrap.Modal(
-                document.getElementById("modalId"),
-                options,
-            );
-        </script>
-        
 
 
-
-
+        <!-- Modal de inicio de sesión -->
         <div class="modal fade" 
         id="loginModal" 
         tabindex="-1" 
@@ -642,183 +689,326 @@
             </div>
         </div>
 
-
-        <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="registerModalLabel">Registrate</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-        
-                    <div class="modal-body">
-                        <form action="#" method="post">
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    placeholder="Nombre" 
-                                    pattern="[A-Za-z\s]+"
-                                    required
-                                    >
-                                </div>
-                                <div class="col">
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    placeholder="Apellido" 
-                                    pattern="[A-Za-z\s]+"
-                                    required
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="modal-body">
-                                <form action="#" method="post">
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <input 
-                                            type="email" 
-                                            class="form-control" 
-                                            placeholder="Correo electrónico" 
-                                            required
-                                            >
-                                        </div>
-                                        <div class="col">
-                                            <input
-                                            type="tel"
-                                            class="form-control"
-                                            placeholder="Número de teléfono"
-                                            required
-                                              >
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <input 
-                                            type="password" 
-                                            class="form-control" 
-                                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$"
-                                            placeholder="Contraseña" 
-                                            required
-                                            >
-                                        </div>
-                                        <div class="col">
-                                            <input 
-                                            type="password" 
-                                            class="form-control" 
-                                            placeholder="Confirma tu contraseña" 
-                                            required
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <input 
-                                            type="text" 
-                                            class="form-control" 
-                                            placeholder="Username" 
-                                            pattern="[A-Za-z\s]+]"
-                                            required
-                                            >
-                                        </div>
-                                        <div class="col">
-                                            <input 
-                                            type="text" 
-                                            class="form-control" 
-                                            placeholder="Estado" 
-                                            pattern="[A-Za-z\s]+]"
-                                            required
-                                            >
-                                           
-                                        </div>
-                                    </div>
-                                  
-                                    <div class="mb-3">
-                                        <p class="mb-1">Fecha de nacimiento</p>
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            placeholder="Fecha de nacimiento"
-                                            required
-                                        >
-                                    </div>
-                                    
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Municipio"
-                                                pattern="[A-Za-z\s]+"
-                                                required
-                                            >
-                                        </div>
-                                        <div class="col">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Código Postal"
-                                                pattern="[0-9]+"
-                                                required
-                                            >
-                                        </div>
-                                    </div>
-
-           
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-delifesti">Regístrame</button>
-                            </div>
-                        </form>
-                    </div>
+        <!-- Modal de registro -->
+        <div
+        class="modal fade"
+        id="registerModal"
+        tabindex="-1"
+        aria-labelledby="registerModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            
+            <!-- Header -->
+            <div class="modal-header">
+              <h5 class="modal-title" id="registerModalLabel">Regístrate</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar"
+              ></button>
+            </div>
+            
+            <!-- Body / Form -->
+            <div class="modal-body">
+              <form id="registerForm" action="#" method="post">
+                
+                <div class="row mb-3">
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="nombre"
+                      placeholder="Nombre"
+                      pattern="[A-Za-z\s]+"
+                      required
+                    />
+                  </div>
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="apellido"
+                      placeholder="Apellido"
+                      pattern="[A-Za-z\s]+"
+                      required
+                    />
+                  </div>
                 </div>
+                
+                <div class="row mb-3">
+                  <div class="col">
+                    <input
+                      type="email"
+                      class="form-control"
+                      name="email"
+                      placeholder="Correo electrónico"
+                      required
+                    />
+                  </div>
+                  <div class="col">
+                    <input
+                      type="tel"
+                      class="form-control"
+                      name="telefono"
+                      placeholder="Número de teléfono"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div class="row mb-3">
+                  <div class="col">
+                    <input
+                      type="password"
+                      class="form-control"
+                      name="password"
+                      placeholder="Contraseña"
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$"
+                      title="Al menos 6 caracteres, mayúscula, minúscula y número"
+                      required
+                    />
+                  </div>
+                  <div class="col">
+                    <input
+                      type="password"
+                      class="form-control"
+                      name="confirm_password"
+                      placeholder="Confirmar contraseña"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div class="row mb-3">
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="username"
+                      placeholder="Username"
+                      pattern="[A-Za-z0-9_]+"
+                      required
+                    />
+                  </div>
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="estado"
+                      placeholder="Estado"
+                      pattern="[A-Za-z\s]+"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="birthdate" class="form-label">Fecha de nacimiento</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="birthdate"
+                    name="birthdate"
+                    required
+                  />
+                </div>
+                
+                <div class="row mb-3">
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="municipio"
+                      placeholder="Municipio"
+                      pattern="[A-Za-z\s]+"
+                      required
+                    />
+                  </div>
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="codigo_postal"
+                      placeholder="Código Postal"
+                      pattern="\d{5}"
+                      title="5 dígitos"
+                      required
+                    />
+                  </div>
+                </div>
+                
+              </form>
+            </div>
+            
+            <!-- Footer -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                form="registerForm"
+                class="btn btn-delifesti"
+              >
+                Regístrame
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+          
+        
+        <!-- Modal de adopción -->
+        <div
+        class="modal fade"
+        id="adopcionModal"
+        tabindex="-1"
+        aria-labelledby="adopcionModalLabel"
+        aria-hidden="true"
+        >
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="adopcionModalLabel">Proceso de Adopción</h5>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar"
+            ></button>
+            </div>
+            <div class="modal-body">
+            <form id="adopcionForm">
+                <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre completo</label>
+                <input type="text" class="form-control" id="nombre" required>
+                </div>
+                <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono de contacto</label>
+                <input type="tel" class="form-control" id="telefono" required>
+                </div>
+                <div class="mb-3">
+                <label for="motivo" class="form-label">
+                    ¿Por qué quieres adoptar esta mascota?
+                </label>
+                <textarea class="form-control" id="motivo" rows="3" required></textarea>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+            <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+            >Cancelar</button>
+            <button type="submit" form="adopcionForm" class="btn btn-delifesti">
+                Enviar solicitud
+            </button>
             </div>
         </div>
-<!-- MODAL QUE NO FUNCIONA -------------------------------------->
-        <div class="modal fade" id="adopcionModal" tabindex="-1" aria-labelledby="adopcionModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="adopcionModalLabel">Proceso de Adopción</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    
-                    <div class="modal-body">
-                        <p>Para iniciar el proceso de adopción, por favor completa la siguiente información:</p>
-                        
-                        <form id="adopcionForm">
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre completo</label>
-                                <input type="text" class="form-control" id="nombre" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="telefono" class="form-label">Teléfono de contacto</label>
-                                <input type="tel" class="form-control" id="telefono" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="motivo" class="form-label">¿Por qué quieres adoptar esta mascota?</label>
-                                <textarea class="form-control" id="motivo" rows="3" required></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-delifesti">Enviar solicitud</button>
-                    </div>
-                </div>
-            </div>
+        </div>
         </div>
 
+        <!-- Modal de perfil -->
+        <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                
+                <div class="modal-header">
+                  <h5 class="modal-title" id="profileModalLabel">Editar Perfil</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                
+                <div class="modal-body">
+                  <form id="profileForm">
+                    <div class="mb-3 text-center">
+                      <img id="profilePreview"
+                           src="https://via.placeholder.com/100"
+                           alt="Foto de perfil"
+                           class="rounded-circle mb-2"
+                           style="width:100px; height:100px; object-fit:cover;">
+                      <input class="form-control" type="file" id="editPhoto" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                      <label for="editUsername" class="form-label">Usuario</label>
+                      <input type="text" id="editUsername" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="editPassword" class="form-label">Contraseña</label>
+                      <input type="password" id="editPassword" class="form-control" placeholder="Nueva contraseña">
+                    </div>
+                    <div class="mb-3">
+                      <label for="editPhone" class="form-label">Teléfono</label>
+                      <input type="tel" id="editPhone" class="form-control" required>
+                    </div>
+                  </form>
+                </div>
+                
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" form="profileForm" class="btn btn-delifesti">Guardar</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              const token     = localStorage.getItem('token');
+              const loginBtn  = document.querySelector('[data-bs-target="#loginModal"]');
+              const perfilBtn = document.getElementById('perfilBtn');
+              const badge     = document.getElementById('badge-count');
         
+              // Mostrar login o perfil según token
+              if (token) {
+                loginBtn.style.display  = 'none';
+                perfilBtn.style.display = 'inline-block';
+              }
+        
+              // Pre-cargar badge (de nuevo por si cambió)
+              const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
+              badge.textContent = alarmas.length;
+        
+              // Pre-cargar datos de perfil
+              const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+              document.getElementById('editUsername').value = profile.username || '';
+              document.getElementById('editPhone').value    = profile.phone    || '';
+              document.getElementById('profilePreview').src = profile.photo    || 'https://via.placeholder.com/100';
+        
+              // Preview de foto
+              document.getElementById('editPhoto').addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = e => document.getElementById('profilePreview').src = e.target.result;
+                  reader.readAsDataURL(file);
+                }
+              });
+        
+              // Guardar perfil
+              document.getElementById('profileForm').onsubmit = e => {
+                e.preventDefault();
+                const updated = {
+                  username: document.getElementById('editUsername').value.trim(),
+                  phone:    document.getElementById('editPhone').value.trim(),
+                  password: document.getElementById('editPassword').value,
+                  photo:    document.getElementById('profilePreview').src
+                };
+                localStorage.setItem('userProfile', JSON.stringify(updated));
+                bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
+              };
+            });
+          </script>
+
+
 
         <!-- Bootstrap JavaScript Libraries -->
         <script
