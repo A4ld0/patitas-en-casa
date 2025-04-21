@@ -158,7 +158,7 @@
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="orders.html">Adopciones</a>
+                      <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#historialModal">Historial</a>
                     </li>
                     <li class="nav-item dropdown">
                       <a
@@ -201,11 +201,12 @@
                     <i class="fas fa-user-cog"></i>
                     </button>
                     <button
-                      class="btn btn-delifesti my-2 my-sm-0"
-                      type="button"
-                      onclick="window.location.href='shopping_cart.html'"
+                    class="btn btn-delifesti my-2 my-sm-0"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#subirMascotaModal"
                     >
-                      <i class="fas fa-paw"></i> Subir mascota
+                    <i class="fas fa-paw"></i> Subir mascota
                     </button>
                     <a href="alarmas.html">
                       <button
@@ -955,6 +956,151 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                   <button type="submit" form="profileForm" class="btn btn-delifesti">Guardar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODAL DE HISTORIAL -->
+
+          <div class="modal fade" id="historialModal" tabindex="-1" aria-labelledby="historialModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="historialModalLabel">Historial de adopción</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th>Nombre de la mascota</th>
+                          <th>ID_Mascota</th>
+                          <th>ID_Adopción</th>
+                          <th>Fecha de adopción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Katy</td>
+                          <td>1291</td>
+                          <td>1280</td>
+                          <td>22/01/2023</td>
+                        </tr>
+                       
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- MODAL DE REGISTRO DE MASCOTA -->
+          <div class="modal fade" id="subirMascotaModal" tabindex="-1" aria-labelledby="subirMascotaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="subirMascotaModalLabel">Subir mascota</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="subirMascotaForm">
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="nombreMascota" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreMascota" required>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="tipoMascota" class="form-label">Tipo</label>
+                        <select class="form-select" id="tipoMascota" required>
+                          <option value="" selected disabled>Seleccionar</option>
+                          <option value="Perro">Perro</option>
+                          <option value="Gato">Gato</option>
+                          <option value="Otro">Otro</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="razaMascota" class="form-label">Raza</label>
+                        <input type="text" class="form-control" id="razaMascota" required>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="edadMascota" class="form-label">Edad</label>
+                        <div class="input-group">
+                          <input type="number" class="form-control" id="edadMascota" min="0" required>
+                          <span class="input-group-text">años</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label class="form-label">Vacunado</label>
+                        <div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="vacunado" id="vacunadoSi" value="SI" required>
+                            <label class="form-check-label" for="vacunadoSi">Sí</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="vacunado" id="vacunadoNo" value="NO">
+                            <label class="form-check-label" for="vacunadoNo">No</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">Esterilizado</label>
+                        <div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="esterilizado" id="esterilizadoSi" value="SI" required>
+                            <label class="form-check-label" for="esterilizadoSi">Sí</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="esterilizado" id="esterilizadoNo" value="NO">
+                            <label class="form-check-label" for="esterilizadoNo">No</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+               
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="sexoMascota" class="form-label">Sexo</label>
+                        <select class="form-select" id="sexoMascota" required>
+                          <option value="" selected disabled>Seleccionar</option>
+                          <option value="Macho">Macho</option>
+                          <option value="Hembra">Hembra</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="colorMascota" class="form-label">Color</label>
+                        <input type="text" class="form-control" id="colorMascota" required>
+                      </div>
+                    </div>
+                    
+                   
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="imagenURL" class="form-label">Imagen (URL)</label>
+                        <input type="url" class="form-control" id="imagenURL" placeholder="https://ejemplo.com/imagen.jpg" required>
+                        <div class="form-text">Ingresa la URL de una imagen de la mascota</div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="observaciones" class="form-label">Observaciones</label>
+                        <textarea class="form-control" id="observaciones" rows="4" placeholder="Describe características importantes o información adicional sobre la mascota..."></textarea>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" form="subirMascotaForm" class="btn btn-delifesti">Publicar mascota</button>
                 </div>
               </div>
             </div>
