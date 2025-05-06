@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <title>Chat - Patitas en Casa</title>
+    <!-- meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: #f0f0f0;
+            height: 100vh;
+        }
+
+        .logo-pequeño {
+            max-height: 46px;
+            width: auto;
+        }
+
+        .navbar-brand {
+            color: #ba8445;
+            font-weight: bold;
+        }
+        
+        .navbar-brand:hover {
+            color: #f3e3d0;
+            font-weight: bold;
+        }
+
+        .btn-delifesti {
+            background-color: #502b02;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-delifesti:hover {
+            background-color: #502b02;
+        }
+
+        /* Chat container */
+        .chat-container {
+            height: calc(100vh - 80px);
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            display: flex;
+        }
+
+        /* Chat sidebar */
+        .chat-sidebar {
+            width: 30%;
+            background-color: #fffbe7;
+            border-right: 1px solid #ddd;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 15px;
+            border-bottom: 1px solid #e9e3d0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-item:hover {
+            background-color: #f3e3d0;
+        }
+
+        .chat-item.active {
+            background-color: #f3e3d0;
+        }
+
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .chat-info {
+            flex-grow: 1;
+        }
+
+        .chat-name {
+            font-weight: bold;
+            color: #502b02;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .chat-preview {
+            color: #777;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-time {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        /* Chat main area */
+        .chat-main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff6c8;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMjUsMiBDMTIuMywyIDIsMTIuMyAyLDI1czEwLjMsMjMgMjMsMjMgczIzLTEwLjMgMjMtMjNTMzcuNywyIDI1LDJ6IE0yNSw0MWMtOC44LDAtMTYtNy4yLTE2LTE2czEwLjgtOCAxOS42LThTNDEsMTYuMiA0MSwyNXMtNy4yLDE2LTE2LDE2eiIgZmlsbD0iI2JhODQ0NSIvPjwvc3ZnPg==');
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #fff6c8;
+            border-bottom: 1px solid #e9e3d0;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            max-width: 65%;
+        }
+
+        .message-sent {
+            align-self: flex-end;
+        }
+
+        .message-received {
+            align-self: flex-start;
+        }
+
+        .message-content {
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+            margin-bottom: 5px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .message-sent .message-content {
+            background-color: #e2d29e;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-received .message-content {
+            background-color: #fff;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: #888;
+            text-align: right;
+        }
+
+        .message-sent .message-time {
+            text-align: right;
+        }
+
+        .message-received .message-time {
+            text-align: left;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: #fffbe7;
+            border-top: 1px solid #e9e3d0;
+            align-items: center;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+            background-color: #fff;
+        }
+
+        .chat-input button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .status-online {
+            background-color: #4CAF50;
+        }
+
+        .status-offline {
+            background-color: #9E9E9E;
+        }
+
+        /* Notification badge */
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff3366;
+            color: white;
+            border-radius: 50%;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            min-width: 1.2rem;
+            text-align: center;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ba8445;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #502b02;
+        }
+
+        /* Emoji button */
+        .emoji-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #888;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .emoji-btn:hover {
+            color: #502b02;
+        }
+
+        /* Chat placeholder */
+        .chat-placeholder {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: #ba8445;
+        }
+
+        .chat-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .chat-placeholder p {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .chat-sidebar {
+                width: 100%;
+                display: none;
+            }
+            
+            .chat-sidebar.show {
+                display: block;
+            }
+            
+            .chat-main {
+                width: 100%;
+            }
+            
+            .chat-main.hide {
+                display: none;
+            }
+            
+            .back-to-list {
+                display: block;
+                margin-right: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDS2L1lcq2WKlLfrvJB-fhIGMD3P2fyFkFXQ&s"
+                alt=""
+                class="logo-pequeño"
+              >
+              Patitas en Casa
+            </a>
+            <button
+              class="navbar-toggler d-lg-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapsibleNavId"
+              aria-controls="collapsibleNavId"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+              <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" href="home.html" aria-current="page">
+                    Inicio
+                    <span class="visually-hidden">(current)</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="chat.html" aria-current="page">
+                    Chat
+                    <span class="visually-hidden">(current)</span>
+                  </a>
+                </li>
+
+               
+              </ul>
+              <form class="d-flex my-2 my-lg-0" id="busqueda">
+            
+                <button
+                  class="btn btn-delifesti my-2 my-sm-0 btn-spacing"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal"
+                >
+                  <i class="fas fa-user"></i> Cuenta
+                </button>
+                <button
+                id="perfilBtn"
+                type="button"
+                class="btn btn-delifesti me-3"
+                style="display: none;"
+                data-bs-toggle="modal"
+                data-bs-target="#profileModal"
+                >
+                <i class="fas fa-user-cog"></i>
+                </button>
+                <button
+                class="btn btn-delifesti my-2 my-sm-0"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#subirMascotaModal"
+                >
+                <i class="fas fa-paw"></i> Subir mascota
+                </button>
+                <a href="alarmas.html">
+                  <button
+                    class="btn btn-delifesti my-2 my-sm-0 position-relative btn-spacing"
+                    type="button"
+                  >
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="badge-count">0</span>
+                  </button>
+                </a>
+              </form>
+            </div>
+          </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+        <div class="chat-container">
+            <!-- Chat sidebar / lista de conversaciones -->
+            <div class="chat-sidebar" id="chatSidebar">
+                <div class="chat-item active" data-chat="rucky">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDS2L1lcq2WKlLfrvJB-fhIGMD3P2fyFkFXQ&s" alt="Rucky" class="chat-avatar">
+                    <div class="chat-info">
+                        <div class="chat-name">Rucky</div>
+                        <div class="chat-preview">¿Que día nos veremos?</div>
+                    </div>
+                    <div class="chat-time">09:45</div>
+                </div>
+                
+            </div>
+            
+            <!-- Chat mensajes -->
+            <div class="chat-main" id="chatMain">
+                <div class="chat-header">
+                    <button class="btn btn-sm btn-outline-secondary me-2 d-md-none back-to-list">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDS2L1lcq2WKlLfrvJB-fhIGMD3P2fyFkFXQ&s" alt="Rucky" class="chat-avatar">
+                    <div class="chat-info">
+                        <div class="chat-name">Rucky</div>
+                        <div class="chat-status">
+                            <span class="status-indicator status-online"></span>
+                            En línea
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Mensajes -->
+                    <div class="message message-sent">
+                        <div class="message-content">
+                            ¿Que día nos veremos?
+                        </div>
+                        <div class="message-time">09:45 ✓</div>
+                    </div>
+                    
+                    <div class="message message-received">
+                        <div class="message-content">
+                            Hola que tal, vi tu solicitud de adopción
+                        </div>
+                        <div class="message-time">10:12</div>
+                    </div>
+
+                    <div class="message message-sent">
+                        <div class="message-content">
+                            ¿Que día nos veremos?
+                        </div>
+                        <div class="message-time">10:48 ✓</div>
+                    </div>
+
+                    <div class="message message-received">
+                        <div class="message-content">
+                            Hola
+                        </div>
+                        <div class="message-time">18:15</div>
+                    </div>
+
+                    <div class="message message-received">
+                        <div class="message-content">
+                            Así es
+                        </div>
+                        <div class="message-time">18:16</div>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <button class="emoji-btn">
+                        <i class="far fa-smile"></i>
+                    </button>
+                    <input type="text" placeholder="Mensaje" id="messageInput">
+                    <button class="btn btn-delifesti">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"
+    ></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"
+    ></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageInput = document.getElementById('messageInput');
+            const chatMessages = document.getElementById('chatMessages');
+            const sendButton = document.querySelector('.chat-input .btn-delifesti');
+            const chatItems = document.querySelectorAll('.chat-item');
+            const backToListButton = document.querySelector('.back-to-list');
+            
+            // Para enviar mensajes
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (messageText) {
+                    const now = new Date();
+                    const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                                   now.getMinutes().toString().padStart(2, '0');
+                    
+                    const messageHTML = `
+                        <div class="message message-sent">
+                            <div class="message-content">
+                                ${messageText}
+                            </div>
+                            <div class="message-time">${timeStr} ✓</div>
+                        </div>
+                    `;
+                    
+                    chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+                    messageInput.value = '';
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Simular respuesta después de 1-3 segundos
+                    setTimeout(() => {
+                        simulateResponse();
+                    }, Math.random() * 2000 + 1000);
+                }
+            }
+            
+            // Simular respuestas
+            function simulateResponse() {
+                const responses = [
+                    "Perfecto, gracias por tu interés en la adopción",
+                    "¿Qué tal el viernes a las 5pm?",
+                    "Claro, podemos coordinar una visita",
+                    "¿Tienes experiencia con mascotas?",
+                    "Por supuesto, te espero"
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                               now.getMinutes().toString().padStart(2, '0');
+                
+                const responseHTML = `
+                    <div class="message message-received">
+                        <div class="message-content">
+                            ${randomResponse}
+                        </div>
+                        <div class="message-time">${timeStr}</div>
+                    </div>
+                `;
+                
+                chatMessages.insertAdjacentHTML('beforeend', responseHTML);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Cambiar de chat al hacer clic en la lista
+            chatItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remover clase activa de todos los items
+                    chatItems.forEach(i => i.classList.remove('active'));
+                    // Agregar clase activa al item seleccionado
+                    this.classList.add('active');
+                    
+                    // En móvil, mostrar el chat y ocultar la lista
+                    if (window.innerWidth < 768) {
+                        document.getElementById('chatSidebar').classList.remove('show');
+                        document.getElementById('chatMain').classList.remove('hide');
+                    }
+                    
+                    // Cambiar la información del encabezado
+                    const chatName = this.querySelector('.chat-name').textContent;
+                    const chatAvatar = this.querySelector('.chat-avatar').src;
+                    
+                    document.querySelector('.chat-header .chat-name').textContent = chatName;
+                    document.querySelector('.chat-header .chat-avatar').src = chatAvatar;
+                    
+                    // Simular carga de mensajes diferentes
+                    chatMessages.innerHTML = ''; // Limpiar mensajes actuales
+                    
+                    // Agregar mensajes de ejemplo específicos para cada chat
+                    if (chatName === 'Rucky') {
+                        chatMessages.innerHTML = `
+                            <div class="message message-sent">
+                                <div class="message-content">
+                                    ¿Que día nos veremos?
+                                </div>
+                                <div class="message-time">09:45 ✓</div>
+                            </div>
+                            
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    Hola que tal, vi tu solicitud de adopción
+                                </div>
+                                <div class="message-time">10:12</div>
+                            </div>
+
+                            <div class="message message-sent">
+                                <div class="message-content">
+                                    ¿Que día nos veremos?
+                                </div>
+                                <div class="message-time">10:48 ✓</div>
+                            </div>
+
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    Hola
+                                </div>
+                                <div class="message-time">18:15</div>
+                            </div>
+
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    Así es
+                                </div>
+                                <div class="message-time">18:16</div>
+                            </div>
+                        `;
+                    } else if (chatName === 'Luna') {
+                        chatMessages.innerHTML = `
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    Hola, estoy interesado en adoptar a Luna
+                                </div>
+                                <div class="message-time">Ayer 15:30</div>
+                            </div>
+                            
+                            <div class="message message-sent">
+                                <div class="message-content">
+                                    ¡Hola! Gracias por tu interés. Luna es una gatita muy cariñosa.
+                                </div>
+                                <div class="message-time">Ayer 15:45 ✓</div>
+                            </div>
+                            
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    ¿Cuántos años tiene la gatita?
+                                </div>
+                                <div class="message-time">Ayer 16:00</div>
+                            </div>
+                        `;
+                    } else if (chatName === 'Max') {
+                        chatMessages.innerHTML = `
+                            <div class="message message-sent">
+                                <div class="message-content">
+                                    Max es un perro muy juguetón, tiene 3 años y está completamente vacunado.
+                                </div>
+                                <div class="message-time">Lun 10:20 ✓</div>
+                            </div>
+                            
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    Gracias por toda la información
+                                </div>
+                                <div class="message-time">Lun 11:05</div>
+                            </div>
+                            
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    ¿Podríamos reunirnos este fin de semana?
+                                </div>
+                                <div class="message-time">Lun 11:06</div>
+                            </div>
+                        `;
+                    } else if (chatName === 'Bella') {
+                        chatMessages.innerHTML = `
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    Hola, me interesa adoptar a Bella
+                                </div>
+                                <div class="message-time">26/04 09:10</div>
+                            </div>
+                            
+                            <div class="message message-received">
+                                <div class="message-content">
+                                    ¿Está vacunada?
+                                </div>
+                                <div class="message-time">26/04 09:11</div>
+                            </div>
+                            
+                            <div class="message message-sent">
+                                <div class="message-content">
+                                    Sí, tiene todas sus vacunas al día y está desparasitada
+                                </div>
+                                <div class="message-time">26/04 12:30 ✓</div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+            });
+            
+            // Manejo responsive para móviles
+            if (backToListButton) {
+                backToListButton.addEventListener('click', function() {
+                    document.getElementById('chatSidebar').classList.add('show');
+                    document.getElementById('chatMain').classList.add('hide');
+                });
+            }
+            
+            // Establecer altura correcta en móviles
+            function setMobileHeight() {
+                if (window.innerWidth < 768) {
+                    const vh = window.innerHeight * 0.01;
+                    document.documentElement.style.setProperty('--vh', `${vh}px`);
+                    
+                    document.querySelector('.chat-container').style.height = 
+                        `calc(100vh - 80px)`;
+                    
+                    document.getElementById('chatSidebar').classList.add('show');
+                    document.getElementById('chatMain').classList.add('hide');
+                }
+            }
+            
+            window.addEventListener('resize', setMobileHeight);
+            setMobileHeight();
+            
+            // Asegurar que el scroll esté en la parte inferior al cargar
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    </script>
+</body>
+</html>
