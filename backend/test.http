@@ -15,7 +15,7 @@ Content-Type: application/json
   "fechaNacimiento": "2000-01-01"
 }
 
-### Login
+### Login de usuario
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
@@ -25,5 +25,4 @@ Content-Type: application/json
 }
 
 
-GET http://localhost:3000/api/auth
 

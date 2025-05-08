@@ -57,4 +57,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// GET /api/auth/usuarios
+router.get('/usuarios', async (req, res) => {
+  const usuarios = await Usuario.find();
+  res.json(usuarios);
+});
+
+
 module.exports = router;
