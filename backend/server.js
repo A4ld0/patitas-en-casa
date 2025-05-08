@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const authRoutes = require('./routes/auth'); // login, registro
-const mascotasRoutes = require('./routes/mascotas'); // CRUD de mascotas
+//const mascotasRoutes = require('./routes/mascotas'); // CRUD de mascotas
 
 const app = express();
 app.use(cors());
@@ -15,7 +15,8 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.error('❌ Error de conexión a MongoDB:', err));
 
 app.use('/api/auth', authRoutes);
-app.use('/api/mascotas', mascotasRoutes);
+
+//app.use('/api/mascotas', mascotasRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
