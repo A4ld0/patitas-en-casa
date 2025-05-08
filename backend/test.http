@@ -24,5 +24,45 @@ Content-Type: application/json
   "password": "123456"
 }
 
+// mascotaaas
+
+### Crear mascota
+POST http://localhost:3000/api/mascotas
+Content-Type: application/json
+
+{
+  "nombre": "Rucky",
+  "tipo": "Perro",
+  "raza": "Chihuahua",
+  "edad": "2",
+  "sexo": "Macho",
+  "color": "negro",
+  "vacunado": "SI",
+  "esterilizado": "NO",
+  "imagen": "https://url-de-imagen",
+  "observaciones": "Juguetón",
+  "estado": "En adopción",
+  "locacion": "Colima, Colima",
+  "fecha": "2025-04-15"
+}
+
+### Obtener mascotas con paginado y filtro
+GET http://localhost:3000/api/mascotas?tipo=Perro&page=1&limit=5
+
+### Obtener mascota por ID
+GET http://localhost:3000/api/mascotas/681cf72b2cc202f1dbe0f587
+
+### Actualizar
+PUT http://localhost:3000/api/mascotas/681cf72b2cc202f1dbe0f587
+Content-Type: application/json
+
+{
+  "estado": "Adoptado"
+}
+
+### Eliminar
+DELETE http://localhost:3000/api/mascotas/681cf970c0443ff320b88531
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWNmMWJlNjIyNGQzYzUzM2I3OWU3MCIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzQ2NzI5NDU2LCJleHAiOjE3NDY3MzY2NTZ9.ZW1_WHFgGA0ISV6SLn2imy86KGSCadHwMbnUp5gIPDE
+
 
 

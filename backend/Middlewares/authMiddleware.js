@@ -6,11 +6,18 @@ function verificarToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = decoded;
+    req.usuario = decoded; // guarda info del token
     next();
-  } catch {
+  } catch (err) {
     return res.status(403).json({ error: 'Token inválido o expirado' });
   }
 }
 
-module.exports = verificarToken;
+function soloAdmin(req, res, next) {
+  if (req.usuario.rol !== 'admin') {
+    return res.status(403).json({ error: 'Acceso denegado: solo administradores' });
+  }
+  next();
+}
+
+module.exports = { verificarToken, soloAdmin };
