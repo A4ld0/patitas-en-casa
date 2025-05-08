@@ -7,7 +7,7 @@ const { verificarToken, soloAdmin } = require('../Middlewares/authMiddleware');
 // GET: Todas con filtros y paginación
 router.get('/', async (req, res) => {
   try {
-    const { tipo, raza, sexo, page = 1, limit = 10 } = req.query;
+    const { tipo, raza, sexo, page = 1, limit = 4 } = req.query;
 
     const filtros = {};
     if (tipo) filtros.tipo = tipo;
