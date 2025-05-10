@@ -607,7 +607,7 @@
                     </div>
                     <div class="mb-3">
                       <label for="editUsername" class="form-label">Usuario</label>
-                      <input type="text" id="editUsername" class="form-control" required>
+                      <input type="text" id="editUsername" class="form-control" >
                     </div>
                     <div class="mb-3">
                       <label for="editPassword" class="form-label">Contraseña</label>
@@ -615,14 +615,19 @@
                     </div>
                     <div class="mb-3">
                       <label for="editPhone" class="form-label">Teléfono</label>
-                      <input type="tel" id="editPhone" class="form-control" required>
+                      <input type="tel" id="editPhone" class="form-control" >
                     </div>
                   </form>
                 </div>
                 
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" form="profileForm" class="btn btn-delifesti">Guardar</button>
+                <div class="modal-footer d-flex justify-content-between">
+                  <button type="button" id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                  </button>
+                  <div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="profileForm" class="btn btn-delifesti">Guardar</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -836,82 +841,9 @@
             crossorigin="anonymous"
         ></script>
 
-        <script>
-          let paginaActual = 1;
-          const LIMITE = 4;
-        
-          async function cargarMascotas(pagina = 1) {
-            const contenedor = document.getElementById('contenedorMascotas');
-            contenedor.innerHTML = "<p class='text-white text-center'>Cargando mascotas...</p>";
-        
-            try {
-              const res = await fetch(`http://localhost:3000/api/mascotas?page=${pagina}&limit=${LIMITE}`);
-              const { data, total } = await res.json();
-        
-              contenedor.innerHTML = ''; // limpia
-        
-              if (data.length === 0) {
-                contenedor.innerHTML = "<p class='text-white text-center'>No hay mascotas disponibles.</p>";
-                return;
-              }
-        
-              data.forEach(mascota => {
-                const card = `
-                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card text-white">
-                      <img class="card-img-top" src="${mascota.imagen}" alt="${mascota.nombre}" style="object-fit: cover; height: 200px;" />
-                      <div class="card-body" style="color: #fffbe7;">
-                        <div class="row">
-                          <div class="col-6">
-                            <h3><strong>${mascota.nombre}</strong></h3>
-                            <p><strong>Tipo:</strong> ${mascota.tipo}</p>
-                            <p><strong>Raza:</strong> ${mascota.raza}</p>
-                            <p><strong>Edad:</strong> ${mascota.edad} años</p>
-                            <p><strong>Sexo:</strong> ${mascota.sexo}</p>
-                          </div>
-                          <div class="col-6">
-                            <p><strong>Color:</strong> ${mascota.color}</p>
-                            <p><strong>Vacunado:</strong> ${mascota.vacunado}</p>
-                            <p><strong>Esterilizado:</strong> ${mascota.esterilizado}</p>
-                            <p><strong>Estado:</strong> ${mascota.estado}</p>
-                            <p><strong>Locación:</strong> ${mascota.locacion}</p>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                          <button type="button" class="btn btn-adoptar" data-bs-toggle="modal" data-bs-target="#adopcionModal">
-                            INICIAR PROCESO DE ADOPCIÓN
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>`;
-                contenedor.innerHTML += card;
-              });
-        
-              generarPaginacion(total, pagina);
-            } catch (error) {
-              console.error("Error al cargar las mascotas:", error);
-              contenedor.innerHTML = "<p class='text-white text-center'>Error al cargar las mascotas.</p>";
-            }
-          }
-        
-          function generarPaginacion(totalItems, paginaActual) {
-            const totalPaginas = Math.ceil(totalItems / LIMITE);
-            const paginacion = document.querySelector('.pagination');
-            paginacion.innerHTML = '';
-        
-            for (let i = 1; i <= totalPaginas; i++) {
-              paginacion.innerHTML += `
-                <li class="page-item ${i === paginaActual ? 'active' : ''}">
-                  <a class="page-link" href="#" onclick="cargarMascotas(${i})">${i}</a>
-                </li>`;
-            }
-          }
-        
-          document.addEventListener('DOMContentLoaded', () => cargarMascotas(paginaActual));
-        </script>
-        
+       
         <script src="home.js"></script>
+        <script src="mascotas-public.js"></script>
 
         
 
