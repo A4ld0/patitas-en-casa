@@ -63,21 +63,11 @@
                     <li class="nav-item">
                       <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#historialModal">Historial</a>
                     </li>
-                    <li class="nav-item dropdown">
-                      <a
-                        class="nav-link dropdown-toggle"
-                        href="#"
-                        id="dropdownId"
-                        data-bs-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >Filtro</a>
-                      <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="home.html">Todos</a>
-                        <a class="dropdown-item" href="panaderia.html">Perros</a>
-                        <a class="dropdown-item" href="panaderia.html">Gatos</a>
-                      </div>
-                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#filtrosModal">
+                      <i class="fas fa-filter"></i> Filtros
+                    </a>
+                  </li>
                   </ul>
                   <form class="d-flex my-2 my-lg-0" id="busqueda">
                     <input
@@ -125,6 +115,7 @@
               </div>
             </nav>
         </header>
+        
 <!--  
         <script>
             document.addEventListener('DOMContentLoaded', () => {
@@ -295,6 +286,84 @@
             </div>
         </div>
         
+         <!-- Modal de filtro -->
+          <div class="modal fade" id="filtrosModal" tabindex="-1" aria-labelledby="filtrosModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="filtrosModalLabel">Filtros avanzados</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              </div>
+              <div class="modal-body">
+                <form id="filterForm">
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label for="filterTipo" class="form-label">Tipo</label>
+                      <select class="form-select" id="filterTipo">
+                        <option value="">Todos</option>
+                        <option value="Perro">Perro</option>
+                        <option value="Gato">Gato</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterRaza" class="form-label">Raza</label>
+                      <input type="text" class="form-control" id="filterRaza" placeholder="Cualquier raza">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterEdad" class="form-label">Edad (años)</label>
+                      <input type="number" class="form-control" id="filterEdad" min="0" placeholder="Cualquier edad">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterSexo" class="form-label">Sexo</label>
+                      <select class="form-select" id="filterSexo">
+                        <option value="">Todos</option>
+                        <option value="Macho">Macho</option>
+                        <option value="Hembra">Hembra</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterColor" class="form-label">Color</label>
+                      <input type="text" class="form-control" id="filterColor" placeholder="Cualquier color">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterVacunado" class="form-label">Vacunado</label>
+                      <select class="form-select" id="filterVacunado">
+                        <option value="">Todos</option>
+                        <option value="SI">Sí</option>
+                        <option value="NO">No</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterEsterilizado" class="form-label">Esterilizado</label>
+                      <select class="form-select" id="filterEsterilizado">
+                        <option value="">Todos</option>
+                        <option value="SI">Sí</option>
+                        <option value="NO">No</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterEstado" class="form-label">Estado</label>
+                      <select class="form-select" id="filterEstado">
+                        <option value="">Todos</option>
+                        <option value="En adopción">En adopción</option>
+                        <option value="Adoptado">Adoptado</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="filterLocacion" class="form-label">Locación</label>
+                      <input type="text" class="form-control" id="filterLocacion" placeholder="Cualquier locación">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="applyFilters" class="btn btn-delifesti" data-bs-dismiss="modal">Aplicar filtros</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
         <!-- Modal de inicio de sesión -->
