@@ -116,23 +116,6 @@
             </nav>
         </header>
         
-<!--  
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-              // Leer array de alarmas (o crear array vacío si no existe)
-              const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-              // Actualizar el badge en la campana
-              const badge = document.getElementById('badge-count');
-              badge.textContent = alarmas.length;
-            });
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-            const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-            document.getElementById('badge-count').textContent = alarmas.length;
-            });
-        </script>-->
 
 <!-- Carrusel -->
             <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
@@ -330,16 +313,16 @@
                       <label for="filterVacunado" class="form-label">Vacunado</label>
                       <select class="form-select" id="filterVacunado">
                         <option value="">Todos</option>
-                        <option value="SI">Sí</option>
-                        <option value="NO">No</option>
+                        <option value="SI">SI</option>
+                        <option value="NO">NO</option>
                       </select>
                     </div>
                     <div class="col-md-4">
                       <label for="filterEsterilizado" class="form-label">Esterilizado</label>
                       <select class="form-select" id="filterEsterilizado">
                         <option value="">Todos</option>
-                        <option value="SI">Sí</option>
-                        <option value="NO">No</option>
+                        <option value="SI">SI</option>
+                        <option value="NO">NO</option>
                       </select>
                     </div>
                     <div class="col-md-4">
@@ -846,56 +829,7 @@
               </div>
             </div>
           </div>
-<!--  
-          <script>
-            document.addEventListener('DOMContentLoaded', () => {
-              const token     = localStorage.getItem('token');
-              const loginBtn  = document.querySelector('[data-bs-target="#loginModal"]');
-              const perfilBtn = document.getElementById('perfilBtn');
-              const badge     = document.getElementById('badge-count');
-        
-              // Mostrar login o perfil según token
-              if (token) {
-                loginBtn.style.display  = 'none';
-                perfilBtn.style.display = 'inline-block';
-              }
-        
-              // Pre-cargar badge (de nuevo por si cambió)
-              const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-              badge.textContent = alarmas.length;
-        
-              // Pre-cargar datos de perfil
-              const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-              document.getElementById('editUsername').value = profile.username || '';
-              document.getElementById('editPhone').value    = profile.phone    || '';
-              document.getElementById('profilePreview').src = profile.photo    || 'https://via.placeholder.com/100';
-        
-              // Preview de foto
-              document.getElementById('editPhoto').addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onload = e => document.getElementById('profilePreview').src = e.target.result;
-                  reader.readAsDataURL(file);
-                }
-              });
-        
-              // Guardar perfil
-              document.getElementById('profileForm').onsubmit = e => {
-                e.preventDefault();
-                const updated = {
-                  username: document.getElementById('editUsername').value.trim(),
-                  phone:    document.getElementById('editPhone').value.trim(),
-                  password: document.getElementById('editPassword').value,
-                  photo:    document.getElementById('profilePreview').src
-                };
-                localStorage.setItem('userProfile', JSON.stringify(updated));
-                bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-              };
-            });
-          </script>
 
--->
 
         <!-- Bootstrap JavaScript Libraries -->
         <script

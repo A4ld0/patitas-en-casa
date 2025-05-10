@@ -4,7 +4,8 @@ const router = express.Router();
 const { verificarToken, soloAdmin } = require('../Middlewares/authMiddleware');
 
 
-// GET: Todas con filtros y paginación
+// GET: Todas con filtros y paginación antes de modificar
+/*
 router.get('/', async (req, res) => {
   try {
     const { tipo, raza, sexo, page = 1, limit = 4 } = req.query;
@@ -24,7 +25,52 @@ router.get('/', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Error al obtener mascotas' });
   }
+});*/
+
+router.get('/', async (req, res) => {
+  try {
+    const {
+      tipo,
+      raza,
+      sexo,
+      edad,
+      color,
+      vacunado,
+      esterilizado,
+      estado,
+      locacion,
+      page = 1,
+      limit = 4
+    } = req.query;
+
+    const filtros = {};
+
+    // Campos de texto con coincidencia parcial e insensible a mayúsculas
+    const camposParciales = { tipo, raza, sexo, color, estado, locacion };
+    for (const [campo, valor] of Object.entries(camposParciales)) {
+      if (valor) {
+        filtros[campo] = { $regex: valor, $options: 'i' };
+      }
+    }
+
+    // Campos exactos
+    if (edad) filtros.edad = parseInt(edad);
+    if (vacunado) filtros.vacunado = vacunado.toUpperCase();
+    if (esterilizado) filtros.esterilizado = esterilizado.toUpperCase();
+
+    const mascotas = await Mascota.find(filtros)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    const total = await Mascota.countDocuments(filtros);
+
+    res.json({ total, page: Number(page), data: mascotas });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al obtener mascotas' });
+  }
 });
+
 
 // GET: Mascota por ID
 router.get('/:id', async (req, res) => {
