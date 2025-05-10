@@ -12,7 +12,8 @@ const usuarioSchema = new mongoose.Schema({
   codigoPostal: { type: String },
   fechaNacimiento: { type: Date },
   rol: { type: String, enum: ['usuario', 'admin'], default: 'usuario' },
-  creadoEn: { type: Date, default: Date.now }
+  creadoEn: { type: Date, default: Date.now },
+  imagen: { type: String, default: 'https://example.com/default-avatar.png' }
 });
 
 module.exports = mongoose.model('Usuario', usuarioSchema);

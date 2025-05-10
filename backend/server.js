@@ -5,10 +5,14 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/auth'); // login, registro
 const mascotasRoutes = require('./routes/mascotas'); // CRUD de mascotas
+const usuarioRoutes = require('./routes/usuarios');
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/api/usuarios', usuarioRoutes);
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Conectado a MongoDB Atlas'))

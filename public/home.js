@@ -277,6 +277,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     alert('No se pudo conectar con el servidor.');
     console.error(err);
   }
+
 });
 
 // Guardar perfil
@@ -291,3 +292,146 @@ document.getElementById('profileForm')?.addEventListener('submit', e => {
   localStorage.setItem('userProfile', JSON.stringify(updated));
   bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
 });
+
+// Función para cargar el perfil del usuario
+async function cargarPerfilUsuario() {
+  const token = localStorage.getItem('token');
+  
+  // Si no hay token, no hay usuario logueado
+  if (!token) {
+    console.log('No hay usuario logueado');
+    return;
+  }
+  
+  try {
+    // Obtener los datos del usuario desde la API usando el token
+    const response = await fetch('http://localhost:3000/api/usuarios/perfil', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Error al cargar el perfil');
+    }
+    
+    const usuario = await response.json();
+    
+    // Rellenar los campos del formulario con los datos del usuario
+    document.getElementById('profilePreview').src = usuario.imagen || 'https://via.placeholder.com/100';
+    document.getElementById('editPhoto').value = usuario.imagen || '';
+    document.getElementById('editUsername').value = usuario.username || '';
+    // No rellenamos la contraseña por seguridad
+    document.getElementById('editPhone').value = usuario.telefono || '';
+    
+    return usuario;
+  } catch (error) {
+    console.error('Error al cargar el perfil:', error);
+    alert(`Error: ${error.message}`);
+  }
+}
+
+// Función para actualizar el perfil
+async function actualizarPerfil(evento) {
+  evento.preventDefault();
+  
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Debes iniciar sesión para actualizar tu perfil');
+    return;
+  }
+  
+  // Recoger los datos del formulario
+  const datosActualizados = {
+    imagen: document.getElementById('editPhoto').value,
+    username: document.getElementById('editUsername').value,
+    telefono: document.getElementById('editPhone').value
+  };
+  
+  // Si hay contraseña nueva, la añadimos a los datos
+  const nuevaContraseña = document.getElementById('editPassword').value;
+  if (nuevaContraseña) {
+    datosActualizados.contraseña = nuevaContraseña;
+  }
+  
+  try {
+    // Enviar los datos actualizados a la API
+    const response = await fetch('http://localhost:3000/api/usuarios/actualizar', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(datosActualizados)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Error al actualizar el perfil');
+    }
+    
+    // Mostrar mensaje de éxito
+    alert('¡Perfil actualizado correctamente!');
+    
+    // Cerrar el modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+    modal.hide();
+    
+    // Actualizar la interfaz si es necesario (por ejemplo, el nombre de usuario en la barra de navegación)
+    actualizarInterfazUsuario();
+    
+  } catch (error) {
+    console.error('Error:', error);
+    alert(`Error al actualizar perfil: ${error.message}`);
+  }
+}
+
+// Función para cerrar sesión
+function cerrarSesion() {
+  // Eliminar el token del almacenamiento local
+  localStorage.removeItem('token');
+  
+  // Redirigir a la página principal o recargar la página
+  window.location.href = '/';
+}
+
+
+
+// Función para mostrar vista previa de la foto de perfil
+function actualizarVistaPrevia() {
+  const url = document.getElementById('editPhoto').value;
+  if (url) {
+    document.getElementById('profilePreview').src = url;
+  }
+}
+
+// Inicializar los eventos cuando se carga el DOM
+document.addEventListener('DOMContentLoaded', () => {
+  // Configurar el formulario de perfil
+  const profileForm = document.getElementById('profileForm');
+  if (profileForm) {
+    profileForm.addEventListener('submit', actualizarPerfil);
+  }
+  
+  // Configurar el botón de cerrar sesión
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', cerrarSesion);
+  }
+  
+  // Configurar la vista previa de la foto de perfil
+  const editPhotoInput = document.getElementById('editPhoto');
+  if (editPhotoInput) {
+    editPhotoInput.addEventListener('input', actualizarVistaPrevia);
+  }
+  
+  // Cargar los datos del perfil cuando se abre el modal
+  const profileModal = document.getElementById('profileModal');
+  if (profileModal) {
+    profileModal.addEventListener('show.bs.modal', cargarPerfilUsuario);
+  }
+});
+
+  
