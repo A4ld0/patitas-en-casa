@@ -64,5 +64,18 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/mascotas/681cf970c0443ff320b88531
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWNmMWJlNjIyNGQzYzUzM2I3OWU3MCIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzQ2NzI5NDU2LCJleHAiOjE3NDY3MzY2NTZ9.ZW1_WHFgGA0ISV6SLn2imy86KGSCadHwMbnUp5gIPDE
 
+### 4. Filtrar por raza
+### 3. Filtrar por tipo
+GET http://localhost:3000/api/mascotas?tipo=Perro
 
+### 4. Filtrar por raza
+GET http://localhost:3000/api/mascotas?raza=Chihuahua
 
+### 5. Filtrar por raza (texto parcial)
+GET http://localhost:3000/api/mascotas?raza=Chi
+
+### 6. Filtrar por sexo
+GET http://localhost:3000/api/mascotas?sexo=Macho
+
+### 7. Filtrar por edad
+GET http://localhost:3000/api/mascotas?edad=2

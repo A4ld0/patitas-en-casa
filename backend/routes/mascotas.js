@@ -5,7 +5,7 @@ const { verificarToken, soloAdmin } = require('../Middlewares/authMiddleware');
 
 
 // GET: Todas con filtros y paginación antes de modificar
-/*
+
 router.get('/', async (req, res) => {
   try {
     const { tipo, raza, sexo, page = 1, limit = 4 } = req.query;
@@ -25,8 +25,8 @@ router.get('/', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Error al obtener mascotas' });
   }
-});*/
-
+});
+/*
 router.get('/', async (req, res) => {
   try {
     const {
@@ -43,20 +43,44 @@ router.get('/', async (req, res) => {
       limit = 4
     } = req.query;
 
+
     const filtros = {};
 
-    // Campos de texto con coincidencia parcial e insensible a mayúsculas
-    const camposParciales = { tipo, raza, sexo, color, estado, locacion };
-    for (const [campo, valor] of Object.entries(camposParciales)) {
-      if (valor) {
-        filtros[campo] = { $regex: valor, $options: 'i' };
+    const camposTexto = { 
+      tipo, 
+      raza, 
+      sexo, 
+      color, 
+      estado, 
+      locacion, 
+      vacunado, 
+      esterilizado 
+    };
+    
+    for (const [campo, valor] of Object.entries(camposTexto)) {
+      if (valor && valor.trim()) {
+        // Para vacunado y esterilizado, usamos coincidencia exacta pero insensible a mayúsculas
+        if (campo === 'vacunado' || campo === 'esterilizado') {
+          // Usamos expresión regular que sea exacta pero insensible a mayúsculas
+          filtros[campo] = new RegExp(`^${valor.trim()}$`, 'i');
+        } else {
+          // Para los demás campos, usamos coincidencia parcial
+          filtros[campo] = new RegExp(valor.trim(), 'i');
+        }
       }
     }
 
-    // Campos exactos
-    if (edad) filtros.edad = parseInt(edad);
-    if (vacunado) filtros.vacunado = vacunado.toUpperCase();
-    if (esterilizado) filtros.esterilizado = esterilizado.toUpperCase();
+    // Manejo especial para edad si es necesario
+    if (edad && edad.trim()) {
+      if (edad.includes('-')) {
+        const [min, max] = edad.split('-').map(v => v.trim());
+        filtros.edad = { $gte: min, $lte: max };
+      } else {
+        filtros.edad = edad.trim();
+      }
+    }
+
+    console.log("Filtros aplicados:", filtros);
 
     const mascotas = await Mascota.find(filtros)
       .skip((page - 1) * limit)
@@ -67,10 +91,9 @@ router.get('/', async (req, res) => {
     res.json({ total, page: Number(page), data: mascotas });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error al obtener mascotas' });
+    res.status(500).json({ error: 'Error al obtener mascotas', details: err.message });
   }
-});
-
+});*/
 
 // GET: Mascota por ID
 router.get('/:id', async (req, res) => {

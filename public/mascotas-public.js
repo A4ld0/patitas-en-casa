@@ -1,63 +1,24 @@
 let paginaActual = 1;
 const LIMITE = 4;
-let filtrosActuales = {};
-
-// Función auxiliar por si luego el backend admite filtros normalizados
-function normalizarTexto(texto) {
-  return texto.normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .replace(/\s+/g, '')
-              .toLowerCase();
-}
-
-function aplicarFiltros() {
-  const campos = {
-    tipo: document.getElementById('filterTipo').value,
-    raza: document.getElementById('filterRaza').value,
-    sexo: document.getElementById('filterSexo').value,
-    edad: document.getElementById('filterEdad').value,
-    color: document.getElementById('filterColor').value,
-    vacunado: document.getElementById('filterVacunado').value.toUpperCase(),
-    esterilizado: document.getElementById('filterEsterilizado').value.toUpperCase(),
-    estado: document.getElementById('filterEstado').value,
-    locacion: document.getElementById('filterLocacion').value
-  };
-
-  filtrosActuales = {};
-  for (const key in campos) {
-    if (campos[key]) {
-      filtrosActuales[key] = campos[key];
-    }
-  }
-
-  cargarMascotas(1);
-}
 
 async function cargarMascotas(pagina = 1) {
   const contenedor = document.getElementById('contenedorMascotas');
   contenedor.innerHTML = "<p class='text-white text-center'>Cargando mascotas...</p>";
 
   try {
-    // Construir la URL con filtros y paginación
-    let url = `http://localhost:3000/api/mascotas?page=${pagina}&limit=${LIMITE}`;
-    Object.keys(filtrosActuales).forEach(key => {
-      if (filtrosActuales[key]) {
-        url += `&${key}=${encodeURIComponent(filtrosActuales[key])}`;
-      }
-    });
-
-    const res = await fetch(url);
+    const res = await fetch(`http://localhost:3000/api/mascotas?page=${pagina}&limit=${LIMITE}`);
+    
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.error || 'Error al obtener datos');
+      throw new Error(errorData.error || 'Error al cargar mascotas');
     }
-
+    
     const { data, total } = await res.json();
     paginaActual = pagina;
+    contenedor.innerHTML = ''; // limpia
 
-    contenedor.innerHTML = '';
     if (data.length === 0) {
-      contenedor.innerHTML = "<p class='text-white text-center'>No hay mascotas que coincidan con las características seleccionadas.</p>";
+      contenedor.innerHTML = "<p class='text-white text-center'>No hay mascotas disponibles.</p>";
       return;
     }
 
@@ -98,6 +59,7 @@ async function cargarMascotas(pagina = 1) {
   } catch (error) {
     console.error("Error al cargar las mascotas:", error);
     contenedor.innerHTML = "<p class='text-white text-center'>Error al cargar las mascotas.</p>";
+    alert(`Error: ${error.message}`);
   }
 }
 
@@ -114,40 +76,92 @@ function generarPaginacion(totalItems, paginaActual) {
   }
 }
 
-function limpiarFiltros() {
-  document.getElementById('filterTipo').value = '';
-  document.getElementById('filterRaza').value = '';
-  document.getElementById('filterSexo').value = '';
-  document.getElementById('filterEdad').value = '';
-  document.getElementById('filterColor').value = '';
-  document.getElementById('filterVacunado').value = '';
-  document.getElementById('filterEsterilizado').value = '';
-  document.getElementById('filterEstado').value = '';
-  document.getElementById('filterLocacion').value = '';
-
-  filtrosActuales = {};
-  cargarMascotas(1);
-}
-
+// Funcionalidad para agregar nuevas mascotas
 document.addEventListener('DOMContentLoaded', () => {
-  const applyFiltersBtn = document.getElementById('applyFilters');
-  if (applyFiltersBtn) {
-    applyFiltersBtn.addEventListener('click', aplicarFiltros);
-  }
+  const formMascota = document.getElementById('subirMascotaForm');
+  
+  if (formMascota) {
+    formMascota.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      // Verificación de que el usuario esté dentro de su perfil para poder subir una mascota
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Debes iniciar sesión para subir una mascota');
 
-  const clearFiltersBtn = document.getElementById('clearFilters');
-  if (clearFiltersBtn) {
-    clearFiltersBtn.addEventListener('click', limpiarFiltros);
-  }
-
-  const logoBtn = document.querySelector('.navbar-brand');
-  if (logoBtn) {
-    logoBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      filtrosActuales = {};
-      cargarMascotas(1);
+        const modalActual = bootstrap.Modal.getInstance(document.getElementById('subirMascotaModal'));
+        modalActual.hide();
+        
+        setTimeout(() => {
+          const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+          loginModal.show();
+        }, 500);
+        
+        return;
+      }
+      
+      // Validación de campos obligatorios
+      const nombre = document.getElementById('nombreMascota').value.trim();
+      const tipo = document.getElementById('tipoMascota').value.trim();
+      const imagen = document.getElementById('imagenURL').value.trim();
+      
+      if (!nombre || !tipo || !imagen) {
+        alert('Por favor, completa los campos obligatorios.');
+        return;
+      }
+      
+      // Recolectar datos del formulario
+      const nuevaMascota = {
+        nombre: document.getElementById('nombreMascota').value,
+        tipo: document.getElementById('tipoMascota').value,
+        raza: document.getElementById('razaMascota').value,
+        edad: document.getElementById('edadMascota').value,
+        sexo: document.getElementById('sexoMascota').value,
+        color: document.getElementById('colorMascota').value,
+        vacunado: document.querySelector('input[name="vacunado"]:checked').value,
+        esterilizado: document.querySelector('input[name="esterilizado"]:checked').value,
+        imagen: document.getElementById('imagenURL').value,
+        locacion: document.getElementById('locacion').value,
+        estado: "En Adopción",
+        fecha: new Date().toLocaleDateString()
+      };
+      
+      try {
+        // Enviar datos a la API
+        const response = await fetch('http://localhost:3000/api/mascotas', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(nuevaMascota)
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Error al subir la mascota');
+        }
+        
+        // Cerrar el modal y mostrar mensaje de éxito
+        const modal = bootstrap.Modal.getInstance(document.getElementById('subirMascotaModal'));
+        modal.hide();
+        
+        alert('¡Mascota subida exitosamente!');
+        
+        // Recargar las mascotas para mostrar la nueva
+        cargarMascotas(1);
+        
+        // Limpiar el formulario
+        formMascota.reset();
+        
+      } catch (error) {
+        console.error('Error:', error);
+        alert(`Error al subir mascota: ${error.message}`);
+      }
     });
   }
-
+  
+  // Iniciar la carga de mascotas cuando se carga el DOM
   cargarMascotas(paginaActual);
 });
