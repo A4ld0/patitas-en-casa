@@ -1,7 +1,7 @@
 // routes/usuario.js
 const express = require('express');
 const router = express.Router();
-const Usuario = require('../models/usuarios');
+const Usuario = require('../models/usuario');
 const bcrypt = require('bcryptjs');
 const { verificarToken } = require('../Middlewares/authMiddleware');
 
@@ -32,3 +32,5 @@ router.put('/perfil', verificarToken, async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar perfil' });
   }
 });
+
+module.exports = router;

@@ -14,6 +14,22 @@ Content-Type: application/json
   "codigoPostal": "44100",
   "fechaNacimiento": "2000-01-01"
 }
+### Registro de yo
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Aldo",
+  "apellido": "García",
+  "email": "velazquezfonsecaaldoramon@gmail.com",
+  "telefono": "3312345678",
+  "password": "123456",
+  "username": "aldofe",
+  "estado": "Jalisco",
+  "municipio": "Guadalajara",
+  "codigoPostal": "44100",
+  "fechaNacimiento": "2000-01-01"
+}
 
 ### Login de usuario
 POST http://localhost:3000/api/auth/login
@@ -60,9 +76,35 @@ Content-Type: application/json
   "estado": "Adoptado"
 }
 
+### Crear alarma
+POST http://localhost:3000/api/alarmas
+Authorization: Bearer <tu-token>
+Content-Type: application/json
+
+{
+  "especie": "perro",
+  "raza": "labrador",
+  "edadMax": 3,
+  "sexo": "M"
+}
+
+### Crear mascota (dispara envío de correo)
+POST http://localhost:3000/api/mascotas
+Authorization: Bearer <tu-token>
+Content-Type: application/json
+
+{
+  "nombre": "Rocky",
+  "especie": "perro",
+  "raza": "labrador",
+  "edad": 2,
+  "sexo": "M"
+}
+
 ### Eliminar
 DELETE http://localhost:3000/api/mascotas/681cf970c0443ff320b88531
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWNmMWJlNjIyNGQzYzUzM2I3OWU3MCIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzQ2NzI5NDU2LCJleHAiOjE3NDY3MzY2NTZ9.ZW1_WHFgGA0ISV6SLn2imy86KGSCadHwMbnUp5gIPDE
 
+### Obtener todas las alarmas
 GET /api/usuarios/perfil
 Authorization: Bearer <token>
