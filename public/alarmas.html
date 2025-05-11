@@ -139,95 +139,150 @@
 
 
   <!-- ======= BOOTSTRAP SCRIPTS ======= -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-    crossorigin="anonymous"
-  ></script>
-
-  <!-- ======= LÓGICA DE ALARMAS ======= -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const listEl = document.getElementById('alarmsList');
-      const badge  = document.getElementById('badge-count');
-      let alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-  
-      // Si no hay alarmas, sembramos dos de ejemplo
-      if (alarmas.length === 0) {
-        alarmas = [
-          {
-            tipo:   'Perro',
-            raza:   'Chihuahua',
-            color:  'Café',
-            ciudad: 'Colima',
-            edad:   '2',
-            sexo:   'Macho'
-          },
-          {
-            tipo:   'Gato',
-            raza:   'Abisinio',
-            color:  'Naranja',
-            ciudad: 'Zapopan',
-            edad:   '4',
-            sexo:   'Macho'
-          }
-        ];
+document.addEventListener('DOMContentLoaded', () => {
+  const listEl = document.getElementById('alarmsList');
+  const badge  = document.getElementById('badge-count');
+  let alarmas = [];
+
+  // Función para cargar las alarmas del servidor
+  async function cargarAlarmasDesdeServidor() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('No hay token disponible');
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:3000/api/alarmas', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        console.log('Alarmas del usuario:', data);
+        alarmas = data;
         localStorage.setItem('alarmas', JSON.stringify(alarmas));
-      }
-  
-      // Función que dibuja la lista de alarmas y actualiza el badge
-      function render() {
-        listEl.innerHTML = '';
-        badge.textContent = alarmas.length;
-        alarmas.forEach((a, i) => {
-          const item = document.createElement('div');
-          item.className = 'list-group-item d-flex justify-content-between';
-          item.innerHTML = `
-            <div>
-              <strong>Tipo:</strong> ${a.tipo}<br>
-              <strong>Raza:</strong> ${a.raza}<br>
-              ${a.edad  ? `<strong>Edad:</strong> ${a.edad}<br>` : ''}
-              ${a.sexo  ? `<strong>Sexo:</strong> ${a.sexo}<br>` : ''}
-              ${a.color ? `<strong>Color:</strong> ${a.color}<br>` : ''}
-              ${a.ciudad? `<strong>Ciudad:</strong> ${a.ciudad}` : ''}
-            </div>
-            <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-          `;
-          // Manejador para eliminar esta alarma
-          item.querySelector('button').onclick = () => {
-            alarmas.splice(i, 1);
-            localStorage.setItem('alarmas', JSON.stringify(alarmas));
-            render();
-          };
-          listEl.append(item);
-        });
-      }
-  
-      // Render inicial
-      render();
-  
-      // Crear nueva alarma desde el formulario
-      document.getElementById('alarmForm').onsubmit = e => {
-        e.preventDefault();
-        const nueva = {
-          tipo:   document.getElementById('tipo').value.trim(),
-          raza:   document.getElementById('raza').value.trim(),
-          color:  document.getElementById('color').value.trim(),
-          ciudad: document.getElementById('ciudad').value.trim(),
-          edad:   document.getElementById('edad').value.trim(),
-          sexo:   document.getElementById('sexo').value
-        };
-        alarmas.push(nueva);
-        localStorage.setItem('alarmas', JSON.stringify(alarmas));
-        e.target.reset();
         render();
-      };
+      } else {
+        console.error('Error al cargar alarmas:', data.error || data);
+      }
+    } catch (error) {
+      console.error('Error al conectar con el servidor:', error);
+    }
+  }
+
+  // Función que dibuja la lista de alarmas y actualiza el badge
+  function render() {
+  listEl.innerHTML = '';
+  badge.textContent = alarmas.length;
+  alarmas.forEach((a, i) => {
+    const item = document.createElement('div');
+    item.className = 'list-group-item d-flex justify-content-between';
+    item.innerHTML = `
+      <div>
+        ${a.especie ? `<strong>Tipo:</strong> ${a.especie}<br>` : ''}
+        ${a.raza    ? `<strong>Raza:</strong> ${a.raza}<br>` : ''}
+        ${a.color   ? `<strong>Color:</strong> ${a.color}<br>` : ''}
+        ${a.edadMax ? `<strong>Edad Máxima:</strong> ${a.edadMax}<br>` : ''}
+        ${a.sexo    ? `<strong>Sexo:</strong> ${a.sexo}<br>` : ''}
+        ${a.ciudad  ? `<strong>Ciudad:</strong> ${a.ciudad}<br>` : ''}
+      </div>
+      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+    `;
+    // Manejador para eliminar esta alarma
+    item.querySelector('button').onclick = async () => {
+  const confirmDelete = confirm('¿Seguro que deseas eliminar esta alarma?');
+  if (!confirmDelete) return;
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Debes iniciar sesión para eliminar alarmas.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:3000/api/alarmas/${a._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     });
-  </script>
+
+    if (res.status === 204) {
+      console.log('Alarma eliminada.');
+      
+      // ✅ Filtra las alarmas que no sean la eliminada
+      alarmas = alarmas.filter(al => al._id !== a._id);
+
+      localStorage.setItem('alarmas', JSON.stringify(alarmas));
+      render();  // ✅ Redibuja la lista sin recargar la página
+    } else {
+      const data = await res.json();
+      console.error('Error al eliminar la alarma:', data.error || data);
+      alert('No se pudo eliminar la alarma.');
+    }
+  } catch (error) {
+    console.error('Error al conectar con el servidor:', error);
+  }
+};
+    listEl.append(item);
+  });
+}
+
+
+  // Render inicial y cargar desde el servidor
+  render();
+  cargarAlarmasDesdeServidor();
+
+  // Crear nueva alarma desde el formulario
+  document.getElementById('alarmForm').onsubmit = async e => {
+    e.preventDefault();
+    const nueva = {
+  especie: document.getElementById('tipo').value.trim(),
+  raza:    document.getElementById('raza').value.trim(),
+  color:   document.getElementById('color').value.trim(),
+  ciudad:  document.getElementById('ciudad').value.trim(),
+  edadMax: document.getElementById('edad').value.trim(),
+  sexo:    document.getElementById('sexo').value
+};
+
+
+    // Guardar en LocalStorage
+    alarmas.push(nueva);
+    localStorage.setItem('alarmas', JSON.stringify(alarmas));
+    e.target.reset();
+    render();
+
+    // Enviar al servidor
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Debes iniciar sesión para guardar alarmas en el servidor.');
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:3000/api/alarmas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(nueva)
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        console.log('Alarma guardada en el servidor:', data);
+      } else {
+        console.error('Error al guardar en el servidor:', data.error || data);
+      }
+    } catch (error) {
+      console.error('Error al conectar con el servidor:', error);
+    }
+  };
+});
+</script>
+
 </body>
 </html>

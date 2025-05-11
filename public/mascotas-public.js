@@ -6,7 +6,17 @@ async function cargarMascotas(pagina = 1) {
   contenedor.innerHTML = "<p class='text-white text-center'>Cargando mascotas...</p>";
 
   try {
-    const res = await fetch(`http://localhost:3000/api/mascotas?page=${pagina}&limit=${LIMITE}`);
+          const token = localStorage.getItem('token');
+      if (!token) {
+  contenedor.innerHTML = "<p class='text-white text-center'>Debes iniciar sesión para ver las mascotas.</p>";
+  return;
+}
+
+      const res = await fetch(`http://localhost:3000/api/mascotas?page=${pagina}&limit=${LIMITE}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
     
     if (!res.ok) {
       const errorData = await res.json();

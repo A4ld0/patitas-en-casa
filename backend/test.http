@@ -105,6 +105,8 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/mascotas/681cf970c0443ff320b88531
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWNmMWJlNjIyNGQzYzUzM2I3OWU3MCIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzQ2NzI5NDU2LCJleHAiOjE3NDY3MzY2NTZ9.ZW1_WHFgGA0ISV6SLn2imy86KGSCadHwMbnUp5gIPDE
 
-### Obtener todas las alarmas
-GET /api/usuarios/perfil
-Authorization: Bearer <token>
+
+
+# ### Obtener todas las alarmas
+# GET /api/usuarios/perfil
+# Authorization: Bearer <token>
