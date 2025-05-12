@@ -21,3 +21,5 @@ function soloAdmin(req, res, next) {
 }
 
 module.exports = { verificarToken, soloAdmin };
+
+
