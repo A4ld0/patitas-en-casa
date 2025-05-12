@@ -41,11 +41,6 @@
         </button>
 
         <div class="d-flex align-items-center position-relative">
-            <button class="btn btn-delifesti me-3"
-                    data-bs-toggle="modal"
-                    data-bs-target="#loginModal">
-              <i class="fas fa-user"></i> Cuenta
-            </button>
             <button class="btn btn-delifesti position-relative">
               <i class="fas fa-bell"></i>
               <span class="notification-badge" id="badge-count">0</span>
@@ -236,51 +231,48 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarAlarmasDesdeServidor();
 
   // Crear nueva alarma desde el formulario
-  document.getElementById('alarmForm').onsubmit = async e => {
-    e.preventDefault();
-    const nueva = {
-  especie: document.getElementById('tipo').value.trim(),
-  raza:    document.getElementById('raza').value.trim(),
-  color:   document.getElementById('color').value.trim(),
-  ciudad:  document.getElementById('ciudad').value.trim(),
-  edadMax: document.getElementById('edad').value.trim(),
-  sexo:    document.getElementById('sexo').value
+document.getElementById('alarmForm').onsubmit = async e => {
+  e.preventDefault();
+  const nueva = {
+    especie: document.getElementById('tipo').value.trim(),
+    raza:    document.getElementById('raza').value.trim(),
+    color:   document.getElementById('color').value.trim(),
+    ciudad:  document.getElementById('ciudad').value.trim(),
+    edadMax: document.getElementById('edad').value.trim(),
+    sexo:    document.getElementById('sexo').value
+  };
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Debes iniciar sesión para guardar alarmas en el servidor.');
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:3000/api/alarmas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(nueva)
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      console.log('Alarma guardada en el servidor:', data);
+      e.target.reset();
+      cargarAlarmasDesdeServidor();  // ✅ Vuelve a cargar para tener el _id real
+    } else {
+      console.error('Error al guardar en el servidor:', data.error || data);
+      alert('Error al guardar la alarma en el servidor.');
+    }
+  } catch (error) {
+    console.error('Error al conectar con el servidor:', error);
+  }
 };
 
-
-    // Guardar en LocalStorage
-    alarmas.push(nueva);
-    localStorage.setItem('alarmas', JSON.stringify(alarmas));
-    e.target.reset();
-    render();
-
-    // Enviar al servidor
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Debes iniciar sesión para guardar alarmas en el servidor.');
-      return;
-    }
-
-    try {
-      const res = await fetch('http://localhost:3000/api/alarmas', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(nueva)
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        console.log('Alarma guardada en el servidor:', data);
-      } else {
-        console.error('Error al guardar en el servidor:', data.error || data);
-      }
-    } catch (error) {
-      console.error('Error al conectar con el servidor:', error);
-    }
-  };
 });
 </script>
 
