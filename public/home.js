@@ -1,135 +1,3 @@
-/*document.addEventListener('DOMContentLoaded', () => {
-  const token     = localStorage.getItem('token');
-  const loginBtn  = document.querySelector('[data-bs-target="#loginModal"]');
-  const perfilBtn = document.getElementById('perfilBtn');
-  const badge     = document.getElementById('badge-count');
-  //const logoutBtn = document.getElementById('logoutBtn'); // si lo agregas al HTML
-
-  // Mostrar botón de perfil si hay token
-  // if (token) {
-  //   loginBtn.style.display  = 'none';
-  //   perfilBtn.style.display = 'inline-block';
-  //   if (logoutBtn) logoutBtn.style.display = 'inline-block';
-  // }
-
-  // Badge de alarmas
-  const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-  if (badge) badge.textContent = alarmas.length;
-
-  // Cargar datos de perfil
-  const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-  document.getElementById('editUsername').value = profile.username || '';
-  document.getElementById('editPhone').value    = profile.phone    || '';
-  document.getElementById('profilePreview').src = profile.photo    || 'https://via.placeholder.com/100';
-
-  // Preview de foto
-  document.getElementById('editPhoto')?.addEventListener('change', function () {
-    const file = this.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => document.getElementById('profilePreview').src = e.target.result;
-      reader.readAsDataURL(file);
-    }
-  });
-
-  // Guardar perfil
-  document.getElementById('profileForm')?.addEventListener('submit', e => {
-    e.preventDefault();
-    const updated = {
-      username: document.getElementById('editUsername').value.trim(),
-      phone:    document.getElementById('editPhone').value.trim(),
-      password: document.getElementById('editPassword').value,
-      photo:    document.getElementById('profilePreview').src
-    };
-    localStorage.setItem('userProfile', JSON.stringify(updated));
-    bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-  });
-
-  // // Cerrar sesión
-  // logoutBtn?.addEventListener('click', () => {
-  //   localStorage.removeItem('token');
-  //   localStorage.removeItem('user');
-  //   localStorage.removeItem('userProfile');
-  //   location.reload();
-  // });
-});
-
-// Registro de usuario
-document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const form = e.target;
-  const data = {
-    nombre: form.nombre.value.trim(),
-    apellido: form.apellido.value.trim(),
-    email: form.email.value.trim(),
-    telefono: form.telefono.value.trim(),
-    password: form.password.value,
-    username: form.username.value.trim(),
-    estado: form.estado.value.trim(),
-    municipio: form.municipio.value.trim(),
-    codigoPostal: form.codigoPostal.value.trim(),
-    fechaNacimiento: form.fechaNacimiento.value
-  };
-
-  try {
-    const res = await fetch('http://localhost:3000/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-
-    const result = await res.json();
-
-    if (res.ok) {
-      alert('¡Registro exitoso!');
-      const modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
-      modal.hide();
-    } else {
-      alert(result.error || 'Error al registrarse');
-      console.warn(result);
-    }
-  } catch (err) {
-    alert('Error de conexión al servidor');
-    console.error(err);
-  }
-});
-
-// Inicio de sesión
-document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-
-  if (!email || !password) {
-    alert('Por favor, ingresa correo y contraseña.');
-    return;
-  }
-
-  try {
-    const res = await fetch('http://localhost:3000/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert('¡Inicio de sesión exitoso!');
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.usuario));
-      location.reload();
-    } else {
-      alert(data.error || 'Credenciales inválidas');
-    }
-  } catch (err) {
-    alert('No se pudo conectar con el servidor.');
-    console.error(err);
-  }
-});*/
-
 document.addEventListener('DOMContentLoaded', () => {
   const token     = localStorage.getItem('token');
   const loginBtn  = document.querySelector('[data-bs-target="#loginModal"]');
@@ -432,4 +300,87 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-  
+async function filtrarMascotas() {
+  // 1) Recoger filtros…
+  const campos = ['Tipo','Edad','Sexo','Vacunado','Esterilizado','Estado'];
+  const filtros = {};
+  campos.forEach(c => {
+    const el = document.getElementById('filter' + c);
+    if (el?.value.trim()) {
+      filtros[
+        c
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+      ] = el.value.trim();
+    }
+  });
+
+  const qs  = new URLSearchParams(filtros).toString();
+  const url = `http://localhost:3000/api/mascotas?${qs}`;
+  console.log('🔍 Fetching:', url);
+
+  try {
+    const token   = localStorage.getItem('token');
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+    const res     = await fetch(url, { headers });
+
+    if (!res.ok) {
+      console.error('Error HTTP:', res.status, await res.text());
+      return;
+    }
+
+    const json = await res.json();
+    console.log('Respuesta completa de /api/mascotas:', json);
+
+    // 2) Extraer el array correcto de la respuesta paginada
+    const mascotasArray = Array.isArray(json)
+      ? json
+      : Array.isArray(json.data)
+        ? json.data
+        : [];
+
+    if (!mascotasArray.length) {
+      console.warn('No hay mascotas con esos filtros');
+    }
+
+    // 3) Pintar las tarjetas
+    mostrarMascotas(mascotasArray);
+
+  } catch (err) {
+    console.error('Error de red o JS:', err);
+  }
+}
+
+function mostrarMascotas(arr) {
+  const cont = document.getElementById('contenedorMascotas');
+  if (!cont) return;
+  cont.innerHTML = '';
+  arr.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'col-md-4 mb-4';
+    card.innerHTML = `
+      <div class="card">
+        <img src="${m.imagen}" class="card-img-top" alt="${m.nombre}">
+        <div class="card-body">
+          <h5 class="card-title">${m.nombre} (${m.tipo})</h5>
+          <p class="card-text">
+            Raza: ${m.raza}<br>
+            Edad: ${m.edad} años<br>
+            Sexo: ${m.sexo}<br>
+            Color: ${m.color}<br>
+            Vacunado: ${m.vacunado}<br>
+            Esterilizado: ${m.esterilizado}<br>
+            Estado: ${m.estado}<br>
+            Locación: ${m.locacion}
+          </p>
+        </div>
+      </div>`;
+    cont.appendChild(card);
+  });
+}
+
+// Asegúrate de tener esto al final de tu archivo:
+document
+  .getElementById('applyFilters')
+  .addEventListener('click', filtrarMascotas);
