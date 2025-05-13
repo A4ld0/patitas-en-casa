@@ -393,8 +393,6 @@ function cerrarSesion() {
   // Eliminar el token del almacenamiento local
   localStorage.removeItem('token');
   
-  // Redirigir a la página principal o recargar la página
-  window.location.href = '/';
 }
 
 
