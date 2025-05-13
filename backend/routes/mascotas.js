@@ -139,4 +139,23 @@ router.delete('/:id', verificarToken, soloAdmin, async (req, res) => {
   }
 });
 
+router.get('/', async (req, res, next) => {
+  try {
+    // Sólo copiar las propiedades que esperamos
+    const allowed = [
+      'tipo','edad','sexo',
+      'vacunado','esterilizado','estado'
+    ];
+    const filtros = {};
+    allowed.forEach(key => {
+      if (req.query[key]) filtros[key] = req.query[key];
+    });
+
+    const resultados = await Mascota.find(filtros);
+    res.json(resultados);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
