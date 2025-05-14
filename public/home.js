@@ -1,9 +1,20 @@
+ let mascotaSeleccionada = null;
+
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('[data-mascota-id]')) {
+      mascotaSeleccionada = e.target.getAttribute('data-mascota-id');
+    }
+  });
+
 document.addEventListener('DOMContentLoaded', () => {
   const token     = localStorage.getItem('token');
   const loginBtn  = document.querySelector('[data-bs-target="#loginModal"]');
   const perfilBtn = document.getElementById('perfilBtn');
   const badge     = document.getElementById('badge-count');
   const logoutBtn = document.getElementById('logoutBtn');
+
+ 
+
 
   // Mostrar botón de perfil si hay token
   verificarAutenticacion();
@@ -360,27 +371,80 @@ function mostrarMascotas(arr) {
     const card = document.createElement('div');
     card.className = 'col-md-4 mb-4';
     card.innerHTML = `
-      <div class="card">
-        <img src="${m.imagen}" class="card-img-top" alt="${m.nombre}">
-        <div class="card-body">
-          <h5 class="card-title">${m.nombre} (${m.tipo})</h5>
-          <p class="card-text">
-            Raza: ${m.raza}<br>
-            Edad: ${m.edad} años<br>
-            Sexo: ${m.sexo}<br>
-            Color: ${m.color}<br>
-            Vacunado: ${m.vacunado}<br>
-            Esterilizado: ${m.esterilizado}<br>
-            Estado: ${m.estado}<br>
-            Locación: ${m.locacion}
-          </p>
-        </div>
-      </div>`;
+  <div class="card">
+    <img src="${m.imagen}" class="card-img-top" alt="${m.nombre}">
+    <div class="card-body">
+      <h5 class="card-title">${m.nombre} (${m.tipo})</h5>
+      <p class="card-text">
+        Raza: ${m.raza}<br>
+        Edad: ${m.edad} años<br>
+        Sexo: ${m.sexo}<br>
+        Color: ${m.color}<br>
+        Vacunado: ${m.vacunado}<br>
+        Esterilizado: ${m.esterilizado}<br>
+        Estado: ${m.estado}<br>
+        Locación: ${m.locacion}
+      </p>
+      <button class="btn btn-delifesti" data-bs-toggle="modal" data-bs-target="#adopcionModal" data-mascota-id="${m._id}">
+        Iniciar proceso de adopción
+      </button>
+    </div>
+  </div>`;
     cont.appendChild(card);
   });
 }
 
-// Asegúrate de tener esto al final de tu archivo:
 document
   .getElementById('applyFilters')
   .addEventListener('click', filtrarMascotas);
+
+
+document.getElementById('adopcionForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Debes iniciar sesión para adoptar.');
+    return;
+  }
+
+  const nombre  = document.getElementById('nombre').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const motivo = document.getElementById('motivo').value.trim();
+
+  if (!mascotaSeleccionada) {
+    alert('No se ha seleccionado una mascota.');
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:3000/api/adopciones', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        mascotaId: mascotaSeleccionada,
+        nombre,
+        telefono,
+        motivo
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert('¡Solicitud de adopción enviada!');
+      document.getElementById('adopcionForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('adopcionModal')).hide();
+    } else {
+      alert(data.error || 'No se pudo enviar la solicitud');
+    }
+
+  } catch (error) {
+    console.error('Error al enviar solicitud:', error);
+    alert('Error al conectar con el servidor.');
+  }
+});
+
