@@ -15,6 +15,11 @@ router.get('/', async (req, res) => {
     if (raza) filtros.raza = raza;
     if (sexo) filtros.sexo = sexo;
 
+    if (req.query.nombre) {
+      filtros.nombre = new RegExp(req.query.nombre, 'i'); // búsqueda insensible a mayúsculas
+    }
+
+
     const mascotas = await Mascota.find(filtros)
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
@@ -26,74 +31,6 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener mascotas' });
   }
 });
-/*
-router.get('/', async (req, res) => {
-  try {
-    const {
-      tipo,
-      raza,
-      sexo,
-      edad,
-      color,
-      vacunado,
-      esterilizado,
-      estado,
-      locacion,
-      page = 1,
-      limit = 4
-    } = req.query;
-
-
-    const filtros = {};
-
-    const camposTexto = { 
-      tipo, 
-      raza, 
-      sexo, 
-      color, 
-      estado, 
-      locacion, 
-      vacunado, 
-      esterilizado 
-    };
-    
-    for (const [campo, valor] of Object.entries(camposTexto)) {
-      if (valor && valor.trim()) {
-        // Para vacunado y esterilizado, usamos coincidencia exacta pero insensible a mayúsculas
-        if (campo === 'vacunado' || campo === 'esterilizado') {
-          // Usamos expresión regular que sea exacta pero insensible a mayúsculas
-          filtros[campo] = new RegExp(`^${valor.trim()}$`, 'i');
-        } else {
-          // Para los demás campos, usamos coincidencia parcial
-          filtros[campo] = new RegExp(valor.trim(), 'i');
-        }
-      }
-    }
-
-    // Manejo especial para edad si es necesario
-    if (edad && edad.trim()) {
-      if (edad.includes('-')) {
-        const [min, max] = edad.split('-').map(v => v.trim());
-        filtros.edad = { $gte: min, $lte: max };
-      } else {
-        filtros.edad = edad.trim();
-      }
-    }
-
-    console.log("Filtros aplicados:", filtros);
-
-    const mascotas = await Mascota.find(filtros)
-      .skip((page - 1) * limit)
-      .limit(parseInt(limit));
-
-    const total = await Mascota.countDocuments(filtros);
-
-    res.json({ total, page: Number(page), data: mascotas });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error al obtener mascotas', details: err.message });
-  }
-});*/
 
 // GET: Mascota por ID
 router.get('/:id', async (req, res) => {

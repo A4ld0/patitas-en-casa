@@ -1,7 +1,7 @@
 let paginaActual = 1;
 const porPagina = 4;
 let adopciones = [];
-let mascotaEditandoId = null;
+
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -82,33 +82,6 @@ function configurarPaginacion() {
   }
 }
 
-/*
-function configurarBotonEditar() {
-  const botones = document.querySelectorAll('.editar-btn');
-
-  botones.forEach(btn => {
-    btn.addEventListener('click', () => {
-      mascotaEditandoId = btn.dataset.id;
-
-      document.getElementById('nombreMascota').value       = btn.dataset.nombre || '';
-      document.getElementById('tipoMascota').value         = btn.dataset.tipo || '';
-      document.getElementById('razaMascota').value         = btn.dataset.raza || '';
-      document.getElementById('colorMascota').value        = btn.dataset.color || '';
-      document.getElementById('edadMascota').value         = btn.dataset.edad || 0;
-      document.getElementById('sexoMascota').value         = btn.dataset.sexo || '';
-      document.getElementById('vacunadoMascota').value     = btn.dataset.vacunado || '';
-      document.getElementById('esterilizadoMascota').value = btn.dataset.esterilizado || '';
-      document.getElementById('estadoMascota').value       = btn.dataset.estado || '';
-      document.getElementById('ubicacionMascota').value    = btn.dataset.ubicacion || '';
-      document.getElementById('imagenURL').value           = btn.dataset.imagen || '';
-      document.getElementById('observaciones').value       = btn.dataset.observaciones || '';
-    });
-  });
-}
-*/
-
-
-
 
 async function eliminarAdopcionYNotificar(id, estado) {
   const token = localStorage.getItem('token');
@@ -174,3 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+document.getElementById('inputBusqueda')?.addEventListener('input', (e) => {
+  const texto = e.target.value.toLowerCase();
+  const filtradas = mascotas.filter(m =>
+    m.nombre.toLowerCase().includes(texto)
+  );
+
+  renderizarCartas(filtradas);
+});
