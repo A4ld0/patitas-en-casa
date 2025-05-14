@@ -166,85 +166,57 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
 
 });
 
-// Guardar perfil
-document.getElementById('profileForm')?.addEventListener('submit', e => {
-  e.preventDefault();
-  const updated = {
-    username: document.getElementById('editUsername').value.trim(),
-    phone: document.getElementById('editPhone').value.trim(),
-    password: document.getElementById('editPassword').value,
-    photo: document.getElementById('profilePreview').src
-  };
-  localStorage.setItem('userProfile', JSON.stringify(updated));
-  bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-});
-
-// Función para cargar el perfil del usuario
+// Cargar perfil del usuario cuando se abre el modal
 async function cargarPerfilUsuario() {
   const token = localStorage.getItem('token');
-  
-  // Si no hay token, no hay usuario logueado
-  if (!token) {
-    console.log('No hay usuario logueado');
-    return;
-  }
-  
+  if (!token) return;
+
   try {
-    // Obtener los datos del usuario desde la API usando el token
-    const response = await fetch('http://localhost:3000/api/usuarios/perfil', {
+    const res = await fetch('http://localhost:3000/api/usuarios/perfil', {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      headers: { 'Authorization': `Bearer ${token}` }
     });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Error al cargar el perfil');
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || 'Error al obtener perfil');
     }
-    
-    const usuario = await response.json();
-    
-    // Rellenar los campos del formulario con los datos del usuario
+
+    const usuario = await res.json();
+
     document.getElementById('profilePreview').src = usuario.imagen || 'https://via.placeholder.com/100';
     document.getElementById('editPhoto').value = usuario.imagen || '';
     document.getElementById('editUsername').value = usuario.username || '';
-    // No rellenamos la contraseña por seguridad
     document.getElementById('editPhone').value = usuario.telefono || '';
-    
-    return usuario;
-  } catch (error) {
-    console.error('Error al cargar el perfil:', error);
-    alert(`Error: ${error.message}`);
+  } catch (err) {
+    console.error('Error al cargar el perfil:', err);
+    alert(`Error: ${err.message}`);
   }
 }
 
-// Función para actualizar el perfil
-async function actualizarPerfil(evento) {
-  evento.preventDefault();
-  
+// Actualizar perfil del usuario
+async function actualizarPerfil(e) {
+  e.preventDefault();
+
   const token = localStorage.getItem('token');
   if (!token) {
     alert('Debes iniciar sesión para actualizar tu perfil');
     return;
   }
-  
-  // Recoger los datos del formulario
+
   const datosActualizados = {
-    imagen: document.getElementById('editPhoto').value,
-    username: document.getElementById('editUsername').value,
-    telefono: document.getElementById('editPhone').value
+    imagen: document.getElementById('editPhoto').value.trim(),
+    username: document.getElementById('editUsername').value.trim(),
+    telefono: document.getElementById('editPhone').value.trim()
   };
-  
-  // Si hay contraseña nueva, la añadimos a los datos
-  const nuevaContraseña = document.getElementById('editPassword').value;
-  if (nuevaContraseña) {
-    datosActualizados.contraseña = nuevaContraseña;
+
+  const nuevaPassword = document.getElementById('editPassword').value.trim();
+  if (nuevaPassword) {
+    datosActualizados.password = nuevaPassword;
   }
-  
+
   try {
-    // Enviar los datos actualizados a la API
-    const response = await fetch('http://localhost:3000/api/usuarios/actualizar', {
+    const res = await fetch('http://localhost:3000/api/usuarios/perfil', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -252,27 +224,32 @@ async function actualizarPerfil(evento) {
       },
       body: JSON.stringify(datosActualizados)
     });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Error al actualizar el perfil');
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'No se pudo actualizar');
     }
-    
-    // Mostrar mensaje de éxito
-    alert('¡Perfil actualizado correctamente!');
-    
-    // Cerrar el modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
-    modal.hide();
-    
-    // Actualizar la interfaz si es necesario (por ejemplo, el nombre de usuario en la barra de navegación)
-    actualizarInterfazUsuario();
-    
-  } catch (error) {
-    console.error('Error:', error);
-    alert(`Error al actualizar perfil: ${error.message}`);
+
+    alert('¡Perfil actualizado con éxito!');
+    bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
+  } catch (err) {
+    console.error('Error al actualizar perfil:', err);
+    alert(`Error al actualizar perfil: ${err.message}`);
   }
 }
+
+// Conectar el form y el evento del modal
+document.addEventListener('DOMContentLoaded', () => {
+  const profileForm = document.getElementById('profileForm');
+  if (profileForm) profileForm.addEventListener('submit', actualizarPerfil);
+
+  const profileModal = document.getElementById('profileModal');
+  if (profileModal) {
+    profileModal.addEventListener('show.bs.modal', cargarPerfilUsuario);
+  }
+});
+
 
 // Función para cerrar sesión
 function cerrarSesion() {
