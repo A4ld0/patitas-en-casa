@@ -148,7 +148,14 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
       alert('¡Inicio de sesión exitoso!');
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.usuario));
-      location.reload();
+      //location.reload();
+
+      if (data.usuario.rol === 'admin') {
+        window.location.href = 'homeAdmin.html';
+      } else {
+        //window.location.href = 'home.html';
+        location.reload();
+      }
     } else {
       alert(data.error || 'Credenciales inválidas');
     }
@@ -409,7 +416,7 @@ document.getElementById('adopcionForm')?.addEventListener('submit', async (e) =>
   }
 
   const nombre  = document.getElementById('nombre').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
+  const email = document.getElementById('emailAdopcion').value.trim();
   const motivo = document.getElementById('motivo').value.trim();
 
   if (!mascotaSeleccionada) {
@@ -427,7 +434,7 @@ document.getElementById('adopcionForm')?.addEventListener('submit', async (e) =>
       body: JSON.stringify({
         mascotaId: mascotaSeleccionada,
         nombre,
-        telefono,
+        email,
         motivo
       })
     });

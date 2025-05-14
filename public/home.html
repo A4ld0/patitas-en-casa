@@ -576,55 +576,43 @@
           
         
         <!-- Modal de adopción -->
-        <div
-        class="modal fade"
-        id="adopcionModal"
-        tabindex="-1"
-        aria-labelledby="adopcionModalLabel"
-        aria-hidden="true"
-        >
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="adopcionModalLabel">Proceso de Adopción</h5>
-            <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Cerrar"
-            ></button>
-            </div>
-            <div class="modal-body">
-            <form id="adopcionForm">
-                <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre completo</label>
-                <input type="text" class="form-control" id="nombre" required>
-                </div>
-                <div class="mb-3">
-                <label for="telefono" class="form-label">Teléfono de contacto</label>
-                <input type="tel" class="form-control" id="telefono" required>
-                </div>
-                <div class="mb-3">
-                <label for="motivo" class="form-label">
-                    ¿Por qué quieres adoptar esta mascota?
-                </label>
-                <textarea class="form-control" id="motivo" rows="3" required></textarea>
-                </div>
-            </form>
-            </div>
-            <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-            >Cancelar</button>
-            <button type="submit" form="adopcionForm" class="btn btn-delifesti">
-                Enviar solicitud
-            </button>
-            </div>
-        </div>
-        </div>
-        </div>
+  <div class="modal fade" id="adopcionModal" tabindex="-1" aria-labelledby="adopcionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="adopcionModalLabel">Proceso de Adopción</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="adopcionForm">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre completo</label>
+            <input type="text" class="form-control" id="nombre" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo de contacto</label>
+            <input type="email" class="form-control" id="emailAdopcion" name="email" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="motivo" class="form-label">¿Por qué quieres adoptar esta mascota?</label>
+            <textarea class="form-control" id="motivo" rows="3" required></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="adopcionForm" class="btn btn-delifesti">Enviar solicitud</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
         <!-- Modal de perfil -->
         <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">

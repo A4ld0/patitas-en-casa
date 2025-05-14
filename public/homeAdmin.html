@@ -55,12 +55,8 @@
                         <span class="visually-hidden">(current)</span>
                       </a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link active" href="mascotasAdmin.html" aria-current="page">Mascotas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="adopcionesAdmin.html" aria-current="page">Adopciones</a>
+                        <a class="nav-link active" href="mascotasAdmin.html" aria-current="page"> Editar mascotas</a>
                     </li>
             
 
@@ -96,380 +92,26 @@
                     >
                     <i class="fas fa-paw"></i> Subir mascota 
                     </button>
-                    <a href="alarmasAdmin.html">
-                      <button
-                        class="btn btn-delifesti my-2 my-sm-0 position-relative btn-spacing"
-                        type="button"
-                      >
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge" id="badge-count">0</span>
-                      </button>
-                    </a>
                   </form>
                 </div>
               </div>
             </nav>
         </header>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-              // Leer array de alarmas (o crear array vacío si no existe)
-              const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-              // Actualizar el badge en la campana
-              const badge = document.getElementById('badge-count');
-              badge.textContent = alarmas.length;
-            });
-        </script>
+       
+<h1 class="text-center mb-3">Gestión de adopciones </h1>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-            const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-            document.getElementById('badge-count').textContent = alarmas.length;
-            });
-        </script>
+        <main class="container my-4">
+        <div class="row" id="contenedorAdopciones">
 
-<!-- Carrusel -->
-            <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
-                
-                <ol class="carousel-indicators">
-                    <li
-                        data-bs-target="#carouselId"
-                        data-bs-slide-to="0"
-                        class="active"
-                        aria-current="true"
-                        aria-label="First slide"
-                    ></li>
-                    <li
-                        data-bs-target="#carouselId"
-                        data-bs-slide-to="1"
-                        aria-label="Second slide"
-                    ></li>
-                    <li
-                        data-bs-target="#carouselId"
-                        data-bs-slide-to="2"
-                        aria-label="Third slide"
-                    ></li>
-                </ol>
-                <div class="carousel-inner" role="listbox">
-                    <div class="carousel-item active">
-                        <img
-                            src="https://www.huellascallejeras.com/wp-content/uploads/2021/08/banner-paginas-web-hhcc-perros-adultos-en-adopcion.jpg"
-                            class="w-100 d-block"
-                            alt="First slide"
-                        />
-                    </div>
-                    <div class="carousel-item">
-                        <img
-                            src="https://media.istockphoto.com/id/930281684/es/foto/perros-y-gatos-leerlo-sobre-banner-web.jpg?s=170667a&w=0&k=20&c=TIOdxnkz4mAbyWfgskoyJx6NpFmebwdbQaVrW5vT5mg="
-                            class="w-100 d-block"
-                            alt="Second slide"
-                        />
-                    </div>
-                    <div class="carousel-item">
-                        <img
-                            src="https://www.shutterstock.com/image-photo/happy-pets-adorable-bernese-mountain-600nw-2242329535.jpg"
-                            class="w-100 d-block"
-                            alt="Third slide"
-                        />
-                    </div>
-                </div>
-                <button
-                    class="carousel-control-prev"
-                    type="button"
-                    data-bs-target="#carouselId"
-                    data-bs-slide="prev"
-                >
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button
-                    class="carousel-control-next"
-                    type="button"
-                    data-bs-target="#carouselId"
-                    data-bs-slide="next"
-                >
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-            
-        </header>
-        <!-- CARTAS -->
-        <main class="container-fluid my-4">
-            <h2 class="text-center mb-3">Buscando familia:</h2>
-             <section class="row">
+        </div>
+        <nav>
+          <ul class="pagination justify-content-center" id="paginacion">
 
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card text-white">
-                      <img
-                        class="card-img-top"
-                        src="https://media.graphassets.com/resize=height:404,width:938/output=format:webp/XOP9UgpHReq93dyhHH0B?width=938"
-                        alt="Rucky el Chihuahua"
-                        style="object-fit: cover; height: 200px;"
-                      />
-                      <div class="card-body" style="color: #fffbe7;">
-                        <div class="row">
-                          <div class="col-6">
-                            <h3><strong>Rucky</strong></h3>
-                            <p><strong>Tipo:</strong> Perro</p>
-                            <p><strong>Raza:</strong> Chihuahua</p>
-                            <p><strong>Edad:</strong> 2 años</p>
-                            <p><strong>Sexo:</strong> Macho</p>
-                          </div>
-                          <div class="col-6">
-                            <p><strong>Color:</strong> negro </p>
-                            <p><strong>Vacunado:</strong> SI</p>
-                            <p><strong>Esterilizado:</strong> NO</p>
-                            <p><strong>Estado:</strong> En adopción</p>
-                            <p><strong>Locación:</strong> Colima, Colima</p>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button
-                                type="button"
-                                class="btn btn-adoptar"
-                                data-bs-toggle="modal"
-                                data-bs-target="#adopcionModal"
-                                >
-                                INICIAR PROCESO DE ADOPCIÓN
-                            </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Perro 2 -->
+          </ul>
+        </nav>
+      </main>
 
-                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card text-white">
-                      <img
-                        class="card-img-top"
-                        src="https://misanimales.com/wp-content/uploads/2020/12/golden-retriever-tumbado.jpg"
-                        alt="Mila la Golden"
-                        style="object-fit: cover; height: 200px;"
-                      />
-                      <div class="card-body" style="color: #fffbe7;">
-                        <div class="row">
-                          <div class="col-6">
-                            <h3><strong>Mila</strong></h3>
-                            <p><strong>Tipo:</strong> Perro</p>
-                            <p><strong>Raza:</strong> Golden Retriever</p>
-                            <p><strong>Edad:</strong> 1 año</p>
-                            <p><strong>Sexo:</strong> Hembra </p>
-                          </div>
-                          <div class="col-6">
-                            <p><strong>Color:</strong> café</p>
-                            <p><strong>Vacunado:</strong> SI</p>
-                            <p><strong>Esterilizado:</strong> NO</p>
-                            <p><strong>Estado:</strong> En adopción</p>
-                            <p><strong>Locación:</strong> Tlaquepaque, Jalisco</p>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button
-                                type="button"
-                                class="btn btn-adoptar"
-                                data-bs-toggle="modal"
-                                data-bs-target="#adopcionModal"
-                                >
-                                INICIAR PROCESO DE ADOPCIÓN
-                            </button>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <!-- Gato 1 -->
-                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card text-white">
-                      <img
-                        class="card-img-top"
-                        src="https://blog.fridapets.com.mx/wp-content/uploads/2025/01/raza-de-gato-abisinio-1024x597.jpg"
-                        alt="Gato Locky"
-                        style="object-fit: cover; height: 200px;"
-                      />
-                      <div class="card-body" style="color: #fffbe7;">
-                        <div class="row">
-                          <div class="col-6">
-                            <h3><strong>Locky</strong></h3>
-                            <p><strong>Tipo:</strong> Gato</p>
-                            <p><strong>Raza:</strong> Abisinio</p>
-                            <p><strong>Edad:</strong> 4 años</p>
-                            <p><strong>Sexo:</strong> Macho</p>
-                          </div>
-                          <div class="col-6">
-                            <p><strong>Color:</strong> naranja</p>
-                            <p><strong>Vacunado:</strong> SI</p>
-                            <p><strong>Esterilizado:</strong> SI</p>
-                            <p><strong>Estado:</strong> En adopción</p>
-                            <p><strong>Locación:</strong> Zapopan, Jalisco</p>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button
-                            type="button"
-                            class="btn btn-adoptar"
-                            data-bs-toggle="modal"
-                            data-bs-target="#adopcionModal"
-                            >
-                            INICIAR PROCESO DE ADOPCIÓN
-                        </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card text-white">
-                      <img
-                        class="card-img-top"
-                        src="https://media.graphassets.com/resize=height:404,width:938/output=format:webp/XOP9UgpHReq93dyhHH0B?width=938"
-                        alt="Rucky el Chihuahua"
-                        style="object-fit: cover; height: 200px;"
-                      />
-                      <div class="card-body" style="color: #fffbe7;">
-                        <div class="row">
-                          <div class="col-6">
-                            <h3><strong>Rucky</strong></h3>
-                            <p><strong>Tipo:</strong> Perro</p>
-                            <p><strong>Raza:</strong> Chihuahua</p>
-                            <p><strong>Edad:</strong> 2 años</p>
-                            <p><strong>Sexo:</strong> Macho</p>
-                          </div>
-                          <div class="col-6">
-                            <p><strong>Color:</strong> café</p>
-                            <p><strong>Vacunado:</strong> SI</p>
-                            <p><strong>Esterilizado:</strong> NO</p>
-                            <p><strong>Estado:</strong> En adopción</p>
-                            <p><strong>Locación:</strong> Colima</p>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button
-                            type="button"
-                            class="btn btn-adoptar"
-                            data-bs-toggle="modal"
-                            data-bs-target="#adopcionModal"
-                            >
-                            INICIAR PROCESO DE ADOPCIÓN
-                        </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card text-white">
-                      <img
-                        class="card-img-top"
-                        src="https://media.graphassets.com/resize=height:404,width:938/output=format:webp/XOP9UgpHReq93dyhHH0B?width=938"
-                        alt="Rucky el Chihuahua"
-                        style="object-fit: cover; height: 200px;"
-                      />
-                      <div class="card-body" style="color: #fffbe7;">
-                        <div class="row">
-                          <div class="col-6">
-                            <h3><strong>Rucky</strong></h3>
-                            <p><strong>Tipo:</strong> Perro</p>
-                            <p><strong>Raza:</strong> Chihuahua</p>
-                            <p><strong>Edad:</strong> 2 años</p>
-                            <p><strong>Sexo:</strong> Macho</p>
-                          </div>
-                          <div class="col-6">
-                            <p><strong>Color:</strong> café</p>
-                            <p><strong>Vacunado:</strong> SI</p>
-                            <p><strong>Esterilizado:</strong> NO</p>
-                            <p><strong>Estado:</strong> En adopción</p>
-                            <p><strong>Locación:</strong> Colima</p>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button
-                            type="button"
-                            class="btn btn-adoptar"
-                            data-bs-toggle="modal"
-                            data-bs-target="#adopcionModal"
-                            >
-                            INICIAR PROCESO DE ADOPCIÓN
-                        </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card text-white">
-                      <img
-                        class="card-img-top"
-                        src="https://media.graphassets.com/resize=height:404,width:938/output=format:webp/XOP9UgpHReq93dyhHH0B?width=938"
-                        alt="Rucky el Chihuahua"
-                        style="object-fit: cover; height: 200px;"
-                      />
-                      <div class="card-body" style="color: #fffbe7;">
-                        <div class="row">
-                          <div class="col-6">
-                            <h3><strong>Rucky</strong></h3>
-                            <p><strong>Tipo:</strong> Perro</p>
-                            <p><strong>Raza:</strong> Chihuahua</p>
-                            <p><strong>Edad:</strong> 2 años</p>
-                            <p><strong>Sexo:</strong> Macho</p>
-                          </div>
-                          <div class="col-6">
-                            <p><strong>Color:</strong> café</p>
-                            <p><strong>Vacunado:</strong> SI</p>
-                            <p><strong>Esterilizado:</strong> NO</p>
-                            <p><strong>Estado:</strong> En adopción</p>
-                            <p><strong>Locación:</strong> Colima</p>
-                          </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button
-                            type="button"
-                            class="btn btn-adoptar"
-                            data-bs-toggle="modal"
-                            data-bs-target="#adopcionModal"
-                            >
-                            INICIAR PROCESO DE ADOPCIÓN
-                        </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-
-
-             </section>
-            
-        </main>
-
-
-        <footer class="">
-            
-            <nav aria-label="Page navigation">
-                <ul
-                    class="pagination justify-content-center "
-                >
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item active" aria-current="page">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            
-        </footer>
 
        
         
@@ -518,295 +160,6 @@
         
 
 
-        <!-- Modal de inicio de sesión -->
-        <div class="modal fade" 
-        id="loginModal" 
-        tabindex="-1" 
-        aria-labelledby="loginModalLabel" 
-        aria-hidden="true"
-        >
-
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-        
-                    <div class="modal-body">
-                        <form id="loginForm">
-                            <div class="form-group mb-">
-                                <label for="email">Correo Electrónico</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    <input 
-                                        type="email" 
-                                        class="form-control" 
-                                        id="email" 
-                                        name="email" 
-                                        required 
-                                        placeholder="usuario@correo.com"
-                                    >
-                                </div>
-                            </div>
-        
-                            <div class="form-group mb-3">
-                                <label for="password">Contraseña</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                    <input 
-                                        type="password" 
-                                        class="form-control" 
-                                        id="password" 
-                                        name="password" 
-                                        required 
-                                        placeholder="Ingresa tu contraseña"
-                                    >
-                                </div>
-                            </div>
-        
-                            <div class="d-flex justify-content-between align-items-center">
-                                <button type="submit" class="btn btn-delifesti">Entrar</button>
-        
-                                <a href="#" class="text-decoration-none" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#registerModal">
-                                    Regístrate aquí.
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal de registro -->
-        <div
-        class="modal fade"
-        id="registerModal"
-        tabindex="-1"
-        aria-labelledby="registerModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            
-            <!-- Header -->
-            <div class="modal-header">
-              <h5 class="modal-title" id="registerModalLabel">Regístrate</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Cerrar"
-              ></button>
-            </div>
-            
-            <!-- Body / Form -->
-            <div class="modal-body">
-              <form id="registerForm" action="#" method="post">
-                
-                <div class="row mb-3">
-                  <div class="col">
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="nombre"
-                      placeholder="Nombre"
-                      pattern="[A-Za-z\s]+"
-                      required
-                    />
-                  </div>
-                  <div class="col">
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="apellido"
-                      placeholder="Apellido"
-                      pattern="[A-Za-z\s]+"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div class="row mb-3">
-                  <div class="col">
-                    <input
-                      type="email"
-                      class="form-control"
-                      name="email"
-                      placeholder="Correo electrónico"
-                      required
-                    />
-                  </div>
-                  <div class="col">
-                    <input
-                      type="tel"
-                      class="form-control"
-                      name="telefono"
-                      placeholder="Número de teléfono"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div class="row mb-3">
-                  <div class="col">
-                    <input
-                      type="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="Contraseña"
-                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$"
-                      title="Al menos 6 caracteres, mayúscula, minúscula y número"
-                      required
-                    />
-                  </div>
-                  <div class="col">
-                    <input
-                      type="password"
-                      class="form-control"
-                      name="confirm_password"
-                      placeholder="Confirmar contraseña"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div class="row mb-3">
-                  <div class="col">
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="username"
-                      placeholder="Username"
-                      pattern="[A-Za-z0-9_]+"
-                      required
-                    />
-                  </div>
-                  <div class="col">
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="estado"
-                      placeholder="Estado"
-                      pattern="[A-Za-z\s]+"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="birthdate" class="form-label">Fecha de nacimiento</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="birthdate"
-                    name="birthdate"
-                    required
-                  />
-                </div>
-                
-                <div class="row mb-3">
-                  <div class="col">
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="municipio"
-                      placeholder="Municipio"
-                      pattern="[A-Za-z\s]+"
-                      required
-                    />
-                  </div>
-                  <div class="col">
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="codigo_postal"
-                      placeholder="Código Postal"
-                      pattern="\d{5}"
-                      title="5 dígitos"
-                      required
-                    />
-                  </div>
-                </div>
-                
-              </form>
-            </div>
-            
-            <!-- Footer -->
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                form="registerForm"
-                class="btn btn-delifesti"
-              >
-                Regístrame
-              </button>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-          
-        
-        <!-- Modal de adopción -->
-        <div
-        class="modal fade"
-        id="adopcionModal"
-        tabindex="-1"
-        aria-labelledby="adopcionModalLabel"
-        aria-hidden="true"
-        >
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="adopcionModalLabel">Proceso de Adopción</h5>
-            <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Cerrar"
-            ></button>
-            </div>
-            <div class="modal-body">
-            <form id="adopcionForm">
-                <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre completo</label>
-                <input type="text" class="form-control" id="nombre" required>
-                </div>
-                <div class="mb-3">
-                <label for="telefono" class="form-label">Teléfono de contacto</label>
-                <input type="tel" class="form-control" id="telefono" required>
-                </div>
-                <div class="mb-3">
-                <label for="motivo" class="form-label">
-                    ¿Por qué quieres adoptar esta mascota?
-                </label>
-                <textarea class="form-control" id="motivo" rows="3" required></textarea>
-                </div>
-            </form>
-            </div>
-            <div class="modal-footer">
-            <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-            >Cancelar</button>
-            <button type="submit" form="adopcionForm" class="btn btn-delifesti">
-                Enviar solicitud
-            </button>
-            </div>
-        </div>
-        </div>
-        </div>
-
-        <!-- Modal de perfil -->
         <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -840,8 +193,13 @@
                     </div>
                   </form>
                 </div>
-                
-                <div class="modal-footer">
+                  <div class="modal-footer d-flex justify-content-between">
+                  <button type="button" id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                  </button>
+                  <div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="profileForm" class="btn btn-delifesti">Guardar</button>
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                   <button type="submit" form="profileForm" class="btn btn-delifesti">Guardar</button>
                 </div>
@@ -850,6 +208,58 @@
           </div>
 
         
+
+
+       
+        <!-- Modal de perfil -->
+            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                
+                <div class="modal-header">
+                  <h5 class="modal-title" id="profileModalLabel">Editar Perfil</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                
+                <div class="modal-body">
+                  <form id="profileForm">
+                    <div class="mb-3 text-center">
+                      <img id="profilePreview"
+                           src="https://via.placeholder.com/100"
+                           alt="Foto de perfil"
+                           class="rounded-circle mb-2"
+                           style="width:100px; height:100px; object-fit:cover;">
+                       
+                        <input type="url" class="form-control" id="editPhoto" placeholder="https://ejemplo.com/imagen.jpg" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="editUsername" class="form-label">Usuario</label>
+                      <input type="text" id="editUsername" class="form-control" >
+                    </div>
+                    <div class="mb-3">
+                      <label for="editPassword" class="form-label">Contraseña</label>
+                      <input type="password" id="editPassword" class="form-control" placeholder="Nueva contraseña">
+                    </div>
+                    <div class="mb-3">
+                      <label for="editPhone" class="form-label">Teléfono</label>
+                      <input type="tel" id="editPhone" class="form-control" >
+                    </div>
+                  </form>
+                </div>
+                
+                <div class="modal-footer d-flex justify-content-between">
+                  <button type="button" id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                  </button>
+                  <div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="profileForm" class="btn btn-delifesti">Guardar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         <!-- MODAL DE REGISTRO DE MASCOTA -->
           <div class="modal fade" id="subirMascotaModal" tabindex="-1" aria-labelledby="subirMascotaModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -943,8 +353,8 @@
                         <div class="form-text">Ingresa la URL de una imagen de la mascota</div>
                       </div>
                       <div class="col-md-6">
-                        <label for="observaciones" class="form-label">Observaciones</label>
-                        <textarea class="form-control" id="observaciones" rows="4" placeholder="Describe características importantes o información adicional sobre la mascota..."></textarea>
+                        <label for="locacion" class="form-label">Locacion</label>
+                        <input type="text" class="form-control" id="locacion" required>
                       </div>
                     </div>
                   </form>
@@ -957,56 +367,132 @@
             </div>
           </div>
 
-          <script>
-            document.addEventListener('DOMContentLoaded', () => {
-              const token     = localStorage.getItem('token');
-              const loginBtn  = document.querySelector('[data-bs-target="#loginModal"]');
-              const perfilBtn = document.getElementById('perfilBtn');
-              const badge     = document.getElementById('badge-count');
+
+          <!-- Modal editar mascota -->
+
+          <div class="modal fade modal-mascota" id="editarMascotaModal" tabindex="-1" aria-labelledby="editarMascotaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editarMascotaModalLabel">Actualizar mascota</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="editarMascotaForm">
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="nombreMascota" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreMascota" value="Rucky" required>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="estadoMascota" class="form-label">Estado</label>
+                        <select class="form-select form-control" id="estadoMascota" required>
+                          <option value="" disabled>Seleccionar</option>
+                          <option value="En adopción" selected>En adopción</option>
+                          <option value="Adoptado">Adoptado</option>
+                          <option value="En proceso">En proceso</option>
+                        </select>
+                      </div>
+                    </div>
         
-              // Mostrar login o perfil según token
-              if (token) {
-                loginBtn.style.display  = 'none';
-                perfilBtn.style.display = 'inline-block';
-              }
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="tipoMascota" class="form-label">Tipo</label>
+                        <select class="form-select form-control" id="tipoMascota" required>
+                          <option value="" disabled>Seleccionar</option>
+                          <option value="Perro" selected>Perro</option>
+                          <option value="Gato">Gato</option>
+                          <option value="Otro">Otro</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="ubicacionMascota" class="form-label">Ubicación de registro</label>
+                        <input type="text" class="form-control" id="ubicacionMascota" value="Colima" required>
+                      </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="razaMascota" class="form-label">Raza</label>
+                        <input type="text" class="form-control" id="razaMascota" value="Chihuahua" required>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="vacunadoMascota" class="form-label">Vacunado</label>
+                        <select class="form-select form-control" id="vacunadoMascota" required>
+                          <option value="" disabled>Seleccionar</option>
+                          <option value="SI" selected>SI</option>
+                          <option value="NO">NO</option>
+                        </select>
+                      </div>
+                    </div>
         
-              // Pre-cargar badge (de nuevo por si cambió)
-              const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
-              badge.textContent = alarmas.length;
-        
-              // Pre-cargar datos de perfil
-              const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-              document.getElementById('editUsername').value = profile.username || '';
-              document.getElementById('editPhone').value    = profile.phone    || '';
-              document.getElementById('profilePreview').src = profile.photo    || 'https://via.placeholder.com/100';
-        
-              // Preview de foto
-              document.getElementById('editPhoto').addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onload = e => document.getElementById('profilePreview').src = e.target.result;
-                  reader.readAsDataURL(file);
-                }
-              });
-        
-              // Guardar perfil
-              document.getElementById('profileForm').onsubmit = e => {
-                e.preventDefault();
-                const updated = {
-                  username: document.getElementById('editUsername').value.trim(),
-                  phone:    document.getElementById('editPhone').value.trim(),
-                  password: document.getElementById('editPassword').value,
-                  photo:    document.getElementById('profilePreview').src
-                };
-                localStorage.setItem('userProfile', JSON.stringify(updated));
-                bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-              };
-            });
-          </script>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="edadMascota" class="form-label">Edad</label>
+                        <div class="input-group">
+                          <input type="number" class="form-control" id="edadMascota" min="0" value="2" required>
+                          <span class="input-group-text">años</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="esterilizadoMascota" class="form-label">Esterilizado</label>
+                        <select class="form-select form-control" id="esterilizadoMascota" required>
+                          <option value="" disabled>Seleccionar</option>
+                          <option value="SI">SI</option>
+                          <option value="NO" selected>NO</option>
+                        </select>
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="sexoMascota" class="form-label">Sexo</label>
+                        <select class="form-select form-control" id="sexoMascota" required>
+                          <option value="" disabled>Seleccionar</option>
+                          <option value="Macho" selected>Macho</option>
+                          <option value="Hembra">Hembra</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="imagenURL" class="form-label">Imagen (URL)</label>
+                        <input type="url" class="form-control" id="imagenURL" value="https://media.graphassets.com/resize=height:404,width:938/output=format:webp/XOP9UgpHReq93dyhHH0B?width=938" required>
+                      </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="colorMascota" class="form-label">Color</label>
+                        <input type="text" class="form-control" id="colorMascota" value="Café" required>
+                      </div>
+                    
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="observaciones" class="form-label">Observaciones</label>
+                      <textarea class="form-control" id="observaciones" rows="3" placeholder="Características importantes o información adicional sobre la mascota...">Es un perro amigable, juguetón y muy cariñoso. Busca un hogar con espacio adecuado.</textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer-custom">
+                    <div class="row w-100">
+                      <div class="col-md-6 text-start">
+                        <button type="button" class="btn btn-eliminar" id="btnEliminarMascota">
+                          Eliminar mascota
+                        </button>
+                      </div>
+                      <div class="col-md-6 text-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" form="editarMascotaForm" class="btn btn-actualizar">Actualizar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
-
+ 
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -1019,8 +505,10 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+       
+        <script src="homeAdmin.js"></script>
 
-
+      
 
     </body>
 </html>

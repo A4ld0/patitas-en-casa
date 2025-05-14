@@ -2,14 +2,14 @@ const Adopcion = require('../models/adopcion');
 
 exports.crearAdopcion = async (req, res) => {
   try {
-    const { mascotaId, nombre, telefono, motivo } = req.body;
+    const { mascotaId, nombre, motivo, email } = req.body;
 
     const nuevaAdopcion = new Adopcion({
       mascota: mascotaId,
-      usuario: req.usuario.id, // 👈 este ID viene del token
+      usuario: req.usuario.id, // este ID viene del token
       nombre,
-      telefono,
-      motivo
+      motivo,
+      email
     });
 
     const guardada = await nuevaAdopcion.save();
