@@ -9,6 +9,8 @@ const mascotasRoutes = require('./routes/mascotas');  // CRUD de mascotas
 const usuarioRoutes = require('./routes/usuarios');   // CRUD de usuarios
 const alarmasRoutes = require('./routes/alarmasRoutes'); // CRUD de alarmas
 const { verificarToken } = require('./Middlewares/authMiddleware'); // Middleware para verificar token
+const adopcionesRoutes = require('./routes/adopciones');
+
 
 const app = express();
 app.use(cors());
@@ -25,6 +27,8 @@ app.use(verificarToken);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/mascotas', mascotasRoutes);
 app.use('/api/alarmas', alarmasRoutes);
+app.use('/api/adopciones', adopcionesRoutes);
+
 
 // Conexión a MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI)
