@@ -158,106 +158,19 @@ function configurarBotonesAccion() {
   });
 }
 
-//FUNCIONES PARA EDITAR USUARIO, CARGAR Y CERRAR SESIÓN
+//Cerrar sesión
+function cerrarSesion() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  localStorage.removeItem('userProfile');
+  window.location.href = 'home.html';
+
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  const profileModal = document.getElementById('profileModal');
-  if (profileModal) {
-    profileModal.addEventListener('show.bs.modal', cargarPerfilUsuario);
-  }
-
-  const profileForm = document.getElementById('profileForm');
-  if (profileForm) {
-    profileForm.addEventListener('submit', actualizarPerfil);
-  }
-
-  const editPhotoInput = document.getElementById('editPhoto');
-  if (editPhotoInput) {
-    editPhotoInput.addEventListener('input', actualizarVistaPrevia);
-  }
-
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', cerrarSesion);
   }
 });
-
-async function cargarPerfilUsuario() {
-  const token = localStorage.getItem('token');
-  if (!token) return;
-
-  try {
-    const res = await fetch('http://localhost:3000/api/usuarios/perfil', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-
-    if (!res.ok) throw new Error('Error al obtener datos del perfil');
-
-    const usuario = await res.json();
-
-    document.getElementById('editUsername').value = usuario.username || '';
-    document.getElementById('editPhone').value = usuario.telefono || '';
-    document.getElementById('profilePreview').src = usuario.imagen || 'https://via.placeholder.com/100';
-    document.getElementById('editPhoto').value = usuario.imagen || '';
-
-  } catch (err) {
-    console.error('Error al cargar perfil:', err);
-    alert('No se pudo cargar el perfil.');
-  }
-}
-
-async function actualizarPerfil(e) {
-  e.preventDefault();
-
-  const token = localStorage.getItem('token');
-  if (!token) return alert('No estás autenticado');
-
-  const datos = {
-    username: document.getElementById('editUsername').value.trim(),
-    telefono: document.getElementById('editPhone').value.trim(),
-    imagen: document.getElementById('editPhoto').value.trim()
-  };
-
-  const nuevaPassword = document.getElementById('editPassword')?.value;
-  if (nuevaPassword) {
-    datos.contraseña = nuevaPassword;
-  }
-
-  try {
-    const res = await fetch('http://localhost:3000/api/usuarios/actualizar', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(datos)
-    });
-
-    const resultado = await res.json();
-    if (!res.ok) throw new Error(resultado.error || 'Error al actualizar');
-
-    alert('Perfil actualizado correctamente');
-    bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
-
-  } catch (err) {
-    console.error('Error al actualizar perfil:', err);
-    alert('Error al actualizar perfil');
-  }
-}
-
-function actualizarVistaPrevia() {
-  const url = document.getElementById('editPhoto').value;
-  if (url) {
-    document.getElementById('profilePreview').src = url;
-  }
-}
-
-function cerrarSesion() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  localStorage.removeItem('userProfile');
-  location.reload();
-}
-
-
 
