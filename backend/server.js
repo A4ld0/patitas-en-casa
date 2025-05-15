@@ -3,6 +3,7 @@ const express = require('express');
 require('./config/nodemailer');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const app = express();
 
 const path = require('path');
 // 1) Sirve estáticos (css, js, imágenes…)
@@ -21,7 +22,7 @@ const { verificarToken } = require('./Middlewares/authMiddleware'); // Middlewar
 const adopcionesRoutes = require('./routes/adopciones');
 const mensajeAdopcionRouter = require('./routes/mensajeAdopcion');
 
-const app = express();
+
 app.use(cors());
 app.use(express.json());
 
