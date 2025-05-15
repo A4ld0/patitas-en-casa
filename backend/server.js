@@ -19,18 +19,32 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//2) Rutas públicas
+// 2) Rutas públicas
 app.use('/api/mensaje-adopcion', mensajeAdopcionRouter);
 app.use('/api/auth',            authRoutes);
 
-// 3) Autenticación para rutas protegidas
-app.use(verificarToken);
+// 3) Rutas protegidas (cada una con su propio verificarToken)
+app.use(
+  '/api/usuarios',
+  verificarToken,
+  usuarioRoutes
+);
+app.use(
+  '/api/mascotas',
+  verificarToken,
+  mascotasRoutes
+);
+app.use(
+  '/api/alarmas',
+  verificarToken,
+  alarmasRoutes
+);
+app.use(
+  '/api/adopciones',
+  verificarToken,
+  adopcionesRoutes
+);
 
-// 4) Rutas protegidas
-app.use('/api/usuarios',  usuarioRoutes);
-app.use('/api/mascotas',  mascotasRoutes);
-app.use('/api/alarmas',   alarmasRoutes);
-app.use('/api/adopciones', adopcionesRoutes);
 
 // 5) Sirve estáticos (css, js, imágenes…)
 app.use(express.static(path.join(__dirname, 'public')));
