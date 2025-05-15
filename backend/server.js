@@ -19,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 2) Rutas públicas de la API
+// 2) Rutas públicas
 app.use('/api/mensaje-adopcion', mensajeAdopcionRouter);
 app.use('/api/auth',             authRoutes);
 
@@ -29,17 +29,18 @@ app.use('/api/mascotas',   verificarToken, mascotasRoutes);
 app.use('/api/alarmas',    verificarToken, alarmasRoutes);
 app.use('/api/adopciones', verificarToken, adopcionesRoutes);
 
-// 4) History API Fallback — cualquier ruta que no empiece por /api se sirve como index.html
+// 4) History API Fallback: reescribe todo lo que NO sea /api/... a /index.html
 app.use(history({
   rewrites: [
     { from: /^\/api\/.*$/, to: context => context.parsedUrl.path }
-  ]
+  ],
+  disableDotRule: true
 }));
 
-// 5) Servir archivos estáticos de la carpeta /public
-app.use(express.static(path.join(__dirname, 'public')));
+// 5) Servir estáticos desde ../public
+app.use(express.static(path.join(__dirname, '../public')));
 
-// 6) Conectarse a MongoDB y arrancar el servidor
+// 6) Conexión a MongoDB y arranque
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Conectado a MongoDB Atlas'))
   .catch(err => console.error('❌ Error conectando a MongoDB:', err));
