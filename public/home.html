@@ -68,11 +68,6 @@
                   </li>
                   </ul>
                   <form class="d-flex my-2 my-lg-0" id="busqueda">
-                    <input
-                      class="form-control me-sm-2"
-                      type="text"
-                      placeholder="Buscar"
-                    />
                     <button
                       class="btn btn-delifesti my-2 my-sm-0 btn-spacing"
                       type="button"
@@ -609,6 +604,39 @@
         <button type="submit" form="adopcionForm" class="btn btn-delifesti">Enviar solicitud</button>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Enviar Mensaje -->
+<div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mensajeModalLabel">Enviar mensaje</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="mensajeForm">
+          <!-- aquí recibimos el ID de la mascota -->
+          <input type="hidden" id="mensajeMascotaId" name="mascotaId">
+
+          <div class="mb-3">
+            <label for="razones" class="form-label">¿Por qué quieres adoptar a esta mascota?</label>
+            <textarea
+              class="form-control"
+              id="razones"
+              name="razones"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="mensajeForm" class="btn btn-delifesti">Enviar mensaje</button>
+      </div>
     </div>
   </div>
 </div>

@@ -10,12 +10,13 @@ const usuarioRoutes = require('./routes/usuarios');   // CRUD de usuarios
 const alarmasRoutes = require('./routes/alarmasRoutes'); // CRUD de alarmas
 const { verificarToken } = require('./Middlewares/authMiddleware'); // Middleware para verificar token
 const adopcionesRoutes = require('./routes/adopciones');
-
+const mensajeAdopcionRouter = require('./routes/mensajeAdopcion');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/mensaje-adopcion', mensajeAdopcionRouter);
 // Rutas públicas
 app.use('/api/auth', authRoutes);
 

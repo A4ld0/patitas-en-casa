@@ -31,6 +31,32 @@ Content-Type: application/json
   "fechaNacimiento": "2000-01-01"
 }
 
+### Registro de otro yo
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Aldo",
+  "apellido": "Velazquez",
+  "email": "albefo12345@gmail.com",
+  "telefono": "3312345678",
+  "password": "123456",
+  "username": "luisfega45",
+  "estado": "Jalisco",
+  "municipio": "Guadalajara",
+  "codigoPostal": "44100",
+  "fechaNacimiento": "2000-01-01"
+}
+
+### Login de otro yo
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "albefo12345@gmail.com",
+  "password": "123456"
+}
+
 ### Login de usuario
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
@@ -78,19 +104,19 @@ Content-Type: application/json
 
 ### Crear alarma
 POST http://localhost:3000/api/alarmas
-Authorization: Bearer <tu-token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUzODE1OTZhNjdlYjUzOTFjNmM0OSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3NDcyNjk2NTksImV4cCI6MTc0NzI3Njg1OX0.6lQ7iU0dZ7zz2LDJ7X3RnL36zNIsm2k7EynBgR-DXUo
 Content-Type: application/json
 
 {
   "especie": "perro",
   "raza": "labrador",
   "edadMax": 3,
-  "sexo": "M"
+  "sexo": "Macho"
 }
 
 ### Crear mascota (dispara envío de correo)
 POST http://localhost:3000/api/mascotas
-Authorization: Bearer <tu-token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjUzODE1OTZhNjdlYjUzOTFjNmM0OSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3NDcyNjk2NTksImV4cCI6MTc0NzI3Njg1OX0.6lQ7iU0dZ7zz2LDJ7X3RnL36zNIsm2k7EynBgR-DXUo
 Content-Type: application/json
 
 {
@@ -98,7 +124,7 @@ Content-Type: application/json
   "especie": "perro",
   "raza": "labrador",
   "edad": 2,
-  "sexo": "M"
+  "sexo": "Macho"
 }
 
 ### Eliminar

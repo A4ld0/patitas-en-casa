@@ -190,6 +190,10 @@ height: 60px;
       color: #502b02;
   }
 
-
+.btn-secondary:focus,
+.btn-secondary:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 

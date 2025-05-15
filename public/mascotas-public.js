@@ -54,7 +54,18 @@ async function cargarMascotas(pagina = 1) {
                   <p><strong>Locación:</strong> ${mascota.locacion}</p>
                 </div>
               </div>
-              <div class="text-center mt-3">
+              <div class="d-flex justify-content-end mt-3">
+                <button 
+                    type="button"
+                    class="btn btn-secondary btn-sm me-2"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#mensajeModal"
+                    data-mascota-id="${mascota._id}"
+            
+                  >
+                    <i class="fas fa-envelope"></i>
+                </button>
+
                 <button type="button" class="btn btn-adoptar" data-bs-toggle="modal" data-bs-target="#adopcionModal" data-mascota-id="${mascota._id}">
                   INICIAR PROCESO DE ADOPCIÓN
                 </button>
@@ -64,6 +75,41 @@ async function cargarMascotas(pagina = 1) {
         </div>`;
       contenedor.innerHTML += card;
     });
+
+    // 1) Cuando se abre el modal, guardamos el ID de la mascota
+const mensajeModal = document.getElementById('mensajeModal');
+mensajeModal.addEventListener('show.bs.modal', event => {
+  const button     = event.relatedTarget;
+  const mascotaId  = button.getAttribute('data-mascota-id');
+  mensajeModal.querySelector('#mensajeMascotaId').value = mascotaId;
+});
+
+// 2) Al enviar el formulario, hacemos la petición al backend
+document.getElementById('mensajeForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const mascotaId = e.target.mascotaId.value;
+  const razones   = e.target.razones.value.trim();
+
+  
+  const destinoEmail = 'sofia.noyola@iteso.mx';
+
+  try {
+    const res = await fetch('http://localhost:3000/api/mensaje-adopcion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mascotaId, razones, destinoEmail })
+    });
+
+    if (!res.ok) throw new Error(await res.text());
+    alert('Mensaje enviado correctamente 🎉');
+    bootstrap.Modal.getInstance(mensajeModal).hide();
+    e.target.reset();
+  } catch (err) {
+    console.error(err);
+    alert('Error al enviar el mensaje');
+  }
+});
+
 
     generarPaginacion(total, pagina);
   } catch (error) {
