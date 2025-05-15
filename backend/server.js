@@ -4,6 +4,15 @@ require('./config/nodemailer');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const path = require('path');
+// 1) Sirve estáticos (css, js, imágenes…)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 2) Catch-all para SPA (cualquier ruta no-API devuelve tu HTML)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'alarmas.html'));
+});
+
 const authRoutes = require('./routes/auth');          // login, registro
 const mascotasRoutes = require('./routes/mascotas');  // CRUD de mascotas
 const usuarioRoutes = require('./routes/usuarios');   // CRUD de usuarios
