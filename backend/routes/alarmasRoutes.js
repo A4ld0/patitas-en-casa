@@ -11,9 +11,11 @@ const transporter = require('../config/nodemailer');
 router.use(verificarToken);
 
 // Rutas CRUD estándar
-router.post('/', ctrl.crearAlarma);
-router.get('/', ctrl.obtenerAlarmas);
-router.put('/:id', ctrl.actualizarAlarma);
+router.post('/',    ctrl.crearAlarma);
+router.get('/',     ctrl.obtenerAlarmas);
+// antes era: router.put('/',     ctrl.actualizarAlarma);
+router.put('/:id',  ctrl.actualizarAlarma);
+// antes era: router.delete('/',  ctrl.eliminarAlarma);
 router.delete('/:id', ctrl.eliminarAlarma);
 
 // Ruta para revisar manualmente todas las mascotas y notificar coincidencias

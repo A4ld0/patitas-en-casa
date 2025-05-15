@@ -1,53 +1,54 @@
 require('dotenv').config();
 const express = require('express');
-require('./config/nodemailer');
+require('./config/nodemailer');             // configura transport de correo
 const mongoose = require('mongoose');
 const cors = require('cors');
-const app = express();
-
 const path = require('path');
-// 1) Sirve estáticos (css, js, imágenes…)
-app.use(express.static(path.join(__dirname, 'public')));
 
-// 2) Catch-all para SPA (cualquier ruta no-API devuelve tu HTML)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'alarmas.html'));
-});
-
-const authRoutes = require('./routes/auth');          // login, registro
-const mascotasRoutes = require('./routes/mascotas');  // CRUD de mascotas
-const usuarioRoutes = require('./routes/usuarios');   // CRUD de usuarios
-const alarmasRoutes = require('./routes/alarmasRoutes'); // CRUD de alarmas
-const { verificarToken } = require('./Middlewares/authMiddleware'); // Middleware para verificar token
-const adopcionesRoutes = require('./routes/adopciones');
+const { verificarToken } = require('./Middlewares/authMiddleware');
+const authRoutes            = require('./routes/auth');
+const mascotasRoutes        = require('./routes/mascotas');
+const usuarioRoutes         = require('./routes/usuarios');
+const alarmasRoutes         = require('./routes/alarmasRoutes');
+const adopcionesRoutes      = require('./routes/adopciones');
 const mensajeAdopcionRouter = require('./routes/mensajeAdopcion');
 
+const app = express();
 
+// 1) Middlewares globales
 app.use(cors());
 app.use(express.json());
 
+//2) Rutas públicas
 app.use('/api/mensaje-adopcion', mensajeAdopcionRouter);
-// Rutas públicas
-app.use('/api/auth', authRoutes);
+app.use('/api/auth',            authRoutes);
 
-// Middleware de autenticación para rutas protegidas
-console.log('verificarToken is:', typeof verificarToken);
+// 3) Autenticación para rutas protegidas
 app.use(verificarToken);
 
-// Rutas protegidas
-app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/mascotas', mascotasRoutes);
-app.use('/api/alarmas', alarmasRoutes);
+// 4) Rutas protegidas
+app.use('/api/usuarios',  usuarioRoutes);
+app.use('/api/mascotas',  mascotasRoutes);
+app.use('/api/alarmas',   alarmasRoutes);
 app.use('/api/adopciones', adopcionesRoutes);
 
+// 5) Sirve estáticos (css, js, imágenes…)
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Conexión a MongoDB Atlas
+// 6) Catch‐all para SPA (cualquier GET no‐API devuelve tu HTML)
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api')) {
+    return res.sendFile(path.join(__dirname, 'public', 'alarmas.html'));
+  }
+  next();
+});
+
+// 7) Conexión a MongoDB y arranque
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Conectado a MongoDB Atlas'))
-  .catch(err => console.error('❌ Error de conexión a MongoDB:', err));
+  .catch(err => console.error('❌ Error conectando a MongoDB:', err));
 
-// Arrancar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
 });
