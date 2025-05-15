@@ -2,8 +2,6 @@ let paginaActual = 1;
 const porPagina = 4;
 let adopciones = [];
 
-
-
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarAdopciones();
   mostrarAdopciones();
@@ -13,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function cargarAdopciones() {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch('http://localhost:3000/api/adopciones', {
+    const res = await fetch('/api/adopciones', {    // ← ruta relativa
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -41,7 +39,7 @@ function mostrarAdopciones() {
     const tarjeta = document.createElement('div');
     tarjeta.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
 
-   tarjeta.innerHTML = `
+    tarjeta.innerHTML = `
   <div class="card text-white">
     <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" class="card-img-top" style="height: 200px; object-fit: cover;" />
     <div class="card-body" style="color: #fffbe7;">
@@ -54,12 +52,11 @@ function mostrarAdopciones() {
         <button class="btn btn-danger rechazar-btn" data-id="${adopcion._id}">Rechazar</button>
       </div>
     </div>
-  </div>
-`;
+  </div>`;
     contenedor.appendChild(tarjeta);
   });
 
- configurarBotonesAccion();
+  configurarBotonesAccion();
 }
 
 function configurarPaginacion() {
@@ -82,11 +79,10 @@ function configurarPaginacion() {
   }
 }
 
-
 async function eliminarAdopcionYNotificar(id, estado) {
   const token = localStorage.getItem('token');
   try {
-    const res = await fetch(`http://localhost:3000/api/adopciones/${id}?estado=${estado}`, {
+    const res = await fetch(`/api/adopciones/${id}?estado=${estado}`, {  // ← ruta relativa
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -110,7 +106,6 @@ async function eliminarAdopcionYNotificar(id, estado) {
   }
 }
 
-
 function configurarBotonesAccion() {
   document.querySelectorAll('.aceptar-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -131,27 +126,32 @@ function configurarBotonesAccion() {
   });
 }
 
-//Cerrar sesión
+// Cerrar sesión
 function cerrarSesion() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   localStorage.removeItem('userProfile');
   window.location.href = 'home.html';
-
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', cerrarSesion);
-  }
+  document.getElementById('logoutBtn')?.addEventListener('click', cerrarSesion);
 });
 
+// Búsqueda local (si usas este bloque, ajusta la variable mascotas)
 document.getElementById('inputBusqueda')?.addEventListener('input', (e) => {
   const texto = e.target.value.toLowerCase();
-  const filtradas = mascotas.filter(m =>
-    m.nombre.toLowerCase().includes(texto)
+  const filtradas = adopciones.filter(a =>
+    a.nombre.toLowerCase().includes(texto)
   );
 
-  renderizarCartas(filtradas);
+  // Si renderizarCartas existe, úsala; si no, recarga la vista
+  if (typeof renderizarCartas === 'function') {
+    renderizarCartas(filtradas);
+  } else {
+    adopciones = filtradas;
+    paginaActual = 1;
+    mostrarAdopciones();
+    configurarPaginacion();
+  }
 });

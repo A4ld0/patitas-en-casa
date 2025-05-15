@@ -4,14 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const alarmForm  = document.getElementById('alarmForm');
   const alarmsList = document.getElementById('alarmsList');
   const token      = localStorage.getItem('token');
-  const API_URL    = 'http://localhost:3000/api/alarmas';
+  const API_URL    = '/api/alarmas';  // ← ruta relativa
 
   // 1) Crear una nueva alarma
   alarmForm.addEventListener('submit', async e => {
     e.preventDefault();
-    const tipo   = document.getElementById('tipo').value;
-    const sexo   = document.getElementById('sexo').value;
-    const edadMax= parseInt(document.getElementById('edad').value, 10);
+    const tipo    = document.getElementById('tipo').value;
+    const sexo    = document.getElementById('sexo').value;
+    const edadMax = parseInt(document.getElementById('edad').value, 10);
 
     try {
       const res = await fetch(API_URL, {
@@ -59,9 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>${a.tipo} · ${a.sexo} · ≤ ${a.edadMax} años</span>
           <button class="btn btn-sm btn-outline-danger">Eliminar</button>
         `;
-        // (Opcional) manejar eliminación:
-        const btnDel = item.querySelector('button');
-        btnDel.addEventListener('click', () => deleteAlarm(a._id));
+        // manejar eliminación
+        item.querySelector('button')
+            .addEventListener('click', () => deleteAlarm(a._id));
         alarmsList.appendChild(item);
       });
     } catch (err) {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 3) (Opcional) Eliminar una alarma
+  // 3) Eliminar una alarma
   async function deleteAlarm(id) {
     if (!confirm('¿Eliminar esta alarma?')) return;
     try {
@@ -86,23 +86,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-    document.getElementById('checkMascotasBtn').addEventListener('click', async () => {
+  // 4) Chequear mascotas manualmente
+  document.getElementById('checkMascotasBtn')?.addEventListener('click', async () => {
     if (!confirm('¿Revisar todas las mascotas y enviar notificaciones?')) return;
     try {
-        const res = await fetch('http://localhost:3000/api/alarmas/check', {
+      const res = await fetch('/api/alarmas/check', {  // ← relativa
         method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-        });
-        if (!res.ok) throw new Error(await res.text());
-        alert('Revisión completada. Se enviaron correos si había coincidencias.');
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error(await res.text());
+      alert('Revisión completada. Se enviaron correos si había coincidencias.');
     } catch (err) {
-        console.error('Error en revisión manual:', err);
-        alert('Error al revisar mascotas: ' + err.message);
+      console.error('Error en revisión manual:', err);
+      alert('Error al revisar mascotas: ' + err.message);
     }
-    });
+  });
 
-  // 4) Carga inicial
+  // 5) Carga inicial
   loadAlarms();
 });

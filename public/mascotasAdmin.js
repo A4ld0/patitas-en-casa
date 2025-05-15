@@ -6,6 +6,7 @@ let mascotaEditandoId = null;
 document.addEventListener('DOMContentLoaded', () => {
   cargarMascotas(paginaActual);
   document.getElementById('editarMascotaForm')?.addEventListener('submit', actualizarMascota);
+  document.getElementById('btnEliminarMascota')?.addEventListener('click', eliminarMascota);
 });
 
 async function cargarMascotas(pagina = 1) {
@@ -14,16 +15,14 @@ async function cargarMascotas(pagina = 1) {
 
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch(`http://localhost:3000/api/mascotas?page=${pagina}&limit=${LIMITE}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+    const res = await fetch(`/api/mascotas?page=${pagina}&limit=${LIMITE}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Error al cargar mascotas');
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Error al cargar mascotas');
 
-    mascotas = Array.isArray(data.data) ? data.data : [];
+    mascotas = Array.isArray(json.data) ? json.data : [];
     paginaActual = pagina;
 
     if (mascotas.length === 0) {
@@ -32,7 +31,7 @@ async function cargarMascotas(pagina = 1) {
     }
 
     renderizarCartas();
-    generarPaginacion(data.total, pagina);
+    generarPaginacion(json.total, pagina);
 
   } catch (error) {
     console.error('Error al cargar mascotas:', error);
@@ -52,7 +51,6 @@ function renderizarCartas(lista = mascotas) {
   lista.forEach(mascota => {
     const card = document.createElement('div');
     card.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
-
     card.innerHTML = `
       <div class="card text-white">
         <img class="card-img-top" src="${mascota.imagen}" alt="${mascota.nombre}" style="object-fit: cover; height: 200px;">
@@ -91,7 +89,6 @@ function renderizarCartas(lista = mascotas) {
   });
 }
 
-
 function generarPaginacion(totalItems, paginaActual) {
   const totalPaginas = Math.ceil(totalItems / LIMITE);
   const paginacion = document.getElementById('paginacion');
@@ -112,46 +109,41 @@ function generarPaginacion(totalItems, paginaActual) {
 function llenarModalEditar(id) {
   const mascota = mascotas.find(m => m._id === id);
   if (!mascota) return;
-
   mascotaEditandoId = id;
-
-  document.getElementById('nombreMascota').value = mascota.nombre || '';
-  document.getElementById('estadoMascota').value = mascota.estado || '';
-  document.getElementById('tipoMascota').value = mascota.tipo || '';
-  document.getElementById('ubicacionMascota').value = mascota.locacion || '';
-  document.getElementById('razaMascota').value = mascota.raza || '';
-  document.getElementById('vacunadoMascota').value = mascota.vacunado || '';
-  document.getElementById('edadMascota').value = mascota.edad || '';
+  document.getElementById('nombreMascota').value       = mascota.nombre || '';
+  document.getElementById('estadoMascota').value      = mascota.estado || '';
+  document.getElementById('tipoMascota').value        = mascota.tipo || '';
+  document.getElementById('ubicacionMascota').value   = mascota.locacion || '';
+  document.getElementById('razaMascota').value        = mascota.raza || '';
+  document.getElementById('vacunadoMascota').value    = mascota.vacunado || '';
+  document.getElementById('edadMascota').value        = mascota.edad || '';
   document.getElementById('esterilizadoMascota').value = mascota.esterilizado || '';
-  document.getElementById('sexoMascota').value = mascota.sexo || '';
-  document.getElementById('imagenURL').value = mascota.imagen || '';
-  document.getElementById('colorMascota').value = mascota.color || '';
-  document.getElementById('observaciones').value = mascota.observaciones || '';
+  document.getElementById('sexoMascota').value        = mascota.sexo || '';
+  document.getElementById('imagenURL').value          = mascota.imagen || '';
+  document.getElementById('colorMascota').value       = mascota.color || '';
+  document.getElementById('observaciones').value      = mascota.observaciones || '';
 }
 
 async function actualizarMascota(e) {
   e.preventDefault();
-
   const token = localStorage.getItem('token');
   if (!token || !mascotaEditandoId) return;
-
   const datos = {
-    nombre: document.getElementById('nombreMascota').value.trim(),
-    estado: document.getElementById('estadoMascota').value,
-    tipo: document.getElementById('tipoMascota').value,
-    locacion: document.getElementById('ubicacionMascota').value,
-    raza: document.getElementById('razaMascota').value,
-    vacunado: document.getElementById('vacunadoMascota').value,
-    edad: +document.getElementById('edadMascota').value,
-    esterilizado: document.getElementById('esterilizadoMascota').value,
-    sexo: document.getElementById('sexoMascota').value,
-    imagen: document.getElementById('imagenURL').value,
-    color: document.getElementById('colorMascota').value,
+    nombre:        document.getElementById('nombreMascota').value.trim(),
+    estado:        document.getElementById('estadoMascota').value,
+    tipo:          document.getElementById('tipoMascota').value,
+    locacion:      document.getElementById('ubicacionMascota').value,
+    raza:          document.getElementById('razaMascota').value,
+    vacunado:      document.getElementById('vacunadoMascota').value,
+    edad:          +document.getElementById('edadMascota').value,
+    esterilizado:  document.getElementById('esterilizadoMascota').value,
+    sexo:          document.getElementById('sexoMascota').value,
+    imagen:        document.getElementById('imagenURL').value,
+    color:         document.getElementById('colorMascota').value,
     observaciones: document.getElementById('observaciones').value
   };
-
   try {
-    const res = await fetch(`http://localhost:3000/api/mascotas/${mascotaEditandoId}`, {
+    const res = await fetch(`/api/mascotas/${mascotaEditandoId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -159,9 +151,7 @@ async function actualizarMascota(e) {
       },
       body: JSON.stringify(datos)
     });
-
     const data = await res.json();
-
     if (res.ok) {
       alert('Mascota actualizada correctamente');
       bootstrap.Modal.getInstance(document.getElementById('editarMascotaModal')).hide();
@@ -169,7 +159,6 @@ async function actualizarMascota(e) {
     } else {
       alert(data.error || 'Error al actualizar');
     }
-
   } catch (err) {
     console.error('Error al actualizar mascota:', err);
     alert('Error al conectar con el servidor');
@@ -178,26 +167,15 @@ async function actualizarMascota(e) {
 
 async function eliminarMascota() {
   if (!mascotaEditandoId) return;
-
-  const confirmar = confirm('¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.');
-  if (!confirmar) return;
-
+  if (!confirm('¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.')) return;
   const token = localStorage.getItem('token');
-  if (!token) {
-    alert('No estás autenticado.');
-    return;
-  }
-
+  if (!token) return alert('No estás autenticado.');
   try {
-    const res = await fetch(`http://localhost:3000/api/mascotas/${mascotaEditandoId}`, {
+    const res = await fetch(`/api/mascotas/${mascotaEditandoId}`, {
       method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      headers: { 'Authorization': `Bearer ${token}` }
     });
-
     const data = await res.json();
-
     if (res.ok) {
       alert('Mascota eliminada correctamente');
       bootstrap.Modal.getInstance(document.getElementById('editarMascotaModal')).hide();
@@ -211,38 +189,23 @@ async function eliminarMascota() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  cargarMascotas(paginaActual);
-
-  document.getElementById('editarMascotaForm')?.addEventListener('submit', actualizarMascota);
-  document.getElementById('btnEliminarMascota')?.addEventListener('click', eliminarMascota);
-});
-
-//Busqueda
+// Búsqueda local
 document.getElementById('inputBusqueda')?.addEventListener('input', async (e) => {
   const texto = e.target.value.trim().toLowerCase();
-
-  if (texto.length === 0) {
-    cargarMascotas(paginaActual); // vuelve a paginación normal
-    return;
+  if (!texto) {
+    return cargarMascotas(paginaActual);
   }
-
   const token = localStorage.getItem('token');
   try {
-    const res = await fetch(`http://localhost:3000/api/mascotas?nombre=${encodeURIComponent(texto)}&limit=1000`, {
+    const res = await fetch(`/api/mascotas?nombre=${encodeURIComponent(texto)}&limit=1000`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-
     const json = await res.json();
-
     if (!res.ok) throw new Error(json.error || 'Error al buscar');
-
-    if (!Array.isArray(json.data)) {
-      console.warn('Respuesta inesperada:', json);
-      return;
-    }
-
-    renderizarCartas(json.data);
+    if (!Array.isArray(json.data)) return;
+    mascotas = json.data;
+    paginaActual = 1;
+    renderizarCartas(mascotas);
     document.getElementById('paginacion').innerHTML = '';
   } catch (err) {
     console.error('Error en búsqueda:', err);
