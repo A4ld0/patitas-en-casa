@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
     document.getElementById('editUsername')?.value    = profile.username || '';
     document.getElementById('editPhone')?.value       = profile.phone    || '';
-    document.getElementById('profilePreview')?.src     = profile.photo    || 'https://via.placeholder.com/100';
+    document.getElementById('profilePreview').src = profile.photo || 'https://via.placeholder.com/100';
 
     document.getElementById('editPhoto')?.addEventListener('change', function() {
       const file = this.files[0];
