@@ -1,55 +1,54 @@
+// Variable global para saber qué mascota se seleccionó
 let mascotaSeleccionada = null;
-
-document.addEventListener('click', (e) => {
+document.addEventListener('click', e => {
   if (e.target.matches('[data-mascota-id]')) {
     mascotaSeleccionada = e.target.getAttribute('data-mascota-id');
   }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  const token     = localStorage.getItem('token');
   const loginBtn  = document.querySelector('[data-bs-target="#loginModal"]');
   const perfilBtn = document.getElementById('perfilBtn');
   const badge     = document.getElementById('badge-count');
   const logoutBtn = document.getElementById('logoutBtn');
 
+  // 1) Mostrar/ocultar botones según exista token
+  function verificarAutenticacion() {
+    const token = localStorage.getItem('token');
+    if (loginBtn)  loginBtn.style.display  = token ? 'none' : 'inline-block';
+    if (perfilBtn) perfilBtn.style.display = token ? 'inline-block' : 'none';
+  }
   verificarAutenticacion();
 
+  // 2) Cargar y mostrar número de alarmas
   const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
   if (badge) badge.textContent = alarmas.length;
 
-  cargarDatosPerfil();
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', cerrarSesion);
-  }
-
-  function verificarAutenticacion() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      loginBtn?.style.setProperty('display', 'none');
-      perfilBtn?.style.setProperty('display', 'inline-block');
-    } else {
-      loginBtn?.style.setProperty('display', 'inline-block');
-      perfilBtn?.style.setProperty('display', 'none');
-    }
-  }
-
+  // 3) Cargar datos de perfil (inputs y preview de foto)
   function cargarDatosPerfil() {
     const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-    document.getElementById('editUsername')?.value    = profile.username || '';
-    document.getElementById('editPhone')?.value       = profile.phone    || '';
-    document.getElementById('profilePreview').src = profile.photo || '//via.placeholder.com/100';
+    const editUsernameEl = document.getElementById('editUsername');
+    const editPhoneEl    = document.getElementById('editPhone');
+    const previewEl      = document.getElementById('profilePreview');
 
-    document.getElementById('editPhoto')?.addEventListener('change', function() {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => document.getElementById('profilePreview').src = e.target.result;
-        reader.readAsDataURL(file);
-      }
+    if (editUsernameEl) editUsernameEl.value = profile.username || '';
+    if (editPhoneEl)    editPhoneEl.value    = profile.phone    || '';
+    // URL completa para evitar problemas de resolución
+    if (previewEl)      previewEl.src        = profile.photo || 'https://via.placeholder.com/100';
+
+    // Cuando el usuario cambia su foto
+    const editPhotoEl = document.getElementById('editPhoto');
+    editPhotoEl?.addEventListener('change', function() {
+      const file = this.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        if (previewEl) previewEl.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     });
   }
+  cargarDatosPerfil();
 
   function cerrarSesion() {
     localStorage.removeItem('token');
