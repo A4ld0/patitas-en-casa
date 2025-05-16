@@ -1,10 +1,10 @@
- let mascotaSeleccionada = null;
+let mascotaSeleccionada = null;
 
-  document.addEventListener('click', (e) => {
-    if (e.target.matches('[data-mascota-id]')) {
-      mascotaSeleccionada = e.target.getAttribute('data-mascota-id');
-    }
-  });
+document.addEventListener('click', (e) => {
+  if (e.target.matches('[data-mascota-id]')) {
+    mascotaSeleccionada = e.target.getAttribute('data-mascota-id');
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   const token     = localStorage.getItem('token');
@@ -13,56 +13,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const badge     = document.getElementById('badge-count');
   const logoutBtn = document.getElementById('logoutBtn');
 
- 
-
-
-  // Mostrar botón de perfil si hay token
   verificarAutenticacion();
 
-  // Badge de alarmas
   const alarmas = JSON.parse(localStorage.getItem('alarmas') || '[]');
   if (badge) badge.textContent = alarmas.length;
 
-  // Cargar datos de perfil
   cargarDatosPerfil();
 
-  // Evento para cerrar sesión
   if (logoutBtn) {
     logoutBtn.addEventListener('click', cerrarSesion);
   }
 
-  // Función para verificar autenticación
   function verificarAutenticacion() {
     const token = localStorage.getItem('token');
-    
     if (token) {
-      // Usuario autenticado
-      if (loginBtn) loginBtn.style.display = 'none';
-      if (perfilBtn) perfilBtn.style.display = 'inline-block';
+      loginBtn?.style.setProperty('display', 'none');
+      perfilBtn?.style.setProperty('display', 'inline-block');
     } else {
-      // Usuario no autenticado
-      if (loginBtn) loginBtn.style.display = 'inline-block';
-      if (perfilBtn) perfilBtn.style.display = 'none';
+      loginBtn?.style.setProperty('display', 'inline-block');
+      perfilBtn?.style.setProperty('display', 'none');
     }
   }
 
-  // Cargar datos de perfil
   function cargarDatosPerfil() {
     const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-    
-    if (document.getElementById('editUsername')) {
-      document.getElementById('editUsername').value = profile.username || '';
-    }
-    
-    if (document.getElementById('editPhone')) {
-      document.getElementById('editPhone').value = profile.phone || '';
-    }
-    
-    if (document.getElementById('profilePreview')) {
-      document.getElementById('profilePreview').src = profile.photo || 'https://via.placeholder.com/100';
-    }
+    document.getElementById('editUsername')?.value    = profile.username || '';
+    document.getElementById('editPhone')?.value       = profile.phone    || '';
+    document.getElementById('profilePreview')?.src     = profile.photo    || 'https://via.placeholder.com/100';
 
-    // Preview de foto
     document.getElementById('editPhoto')?.addEventListener('change', function() {
       const file = this.files[0];
       if (file) {
@@ -73,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Función para cerrar sesión
   function cerrarSesion() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -82,40 +59,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Registro de usuario
+// ——— Registro de usuario ———
 document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-
   const form = e.target;
   const data = {
-    nombre: form.nombre.value.trim(),
-    apellido: form.apellido.value.trim(),
-    email: form.email.value.trim(),
-    telefono: form.telefono.value.trim(),
-    password: form.password.value,
-    username: form.username.value.trim(),
-    estado: form.estado.value.trim(),
-    municipio: form.municipio.value.trim(),
-    codigoPostal: form.codigoPostal.value.trim(),
+    nombre:        form.nombre.value.trim(),
+    apellido:      form.apellido.value.trim(),
+    email:         form.email.value.trim(),
+    telefono:      form.telefono.value.trim(),
+    password:      form.password.value,
+    username:      form.username.value.trim(),
+    estado:        form.estado.value.trim(),
+    municipio:     form.municipio.value.trim(),
+    codigoPostal:  form.codigoPostal.value.trim(),
     fechaNacimiento: form.fechaNacimiento.value
   };
 
   try {
-    const res = await fetch('http://localhost:3000/api/auth/register', {
+    const res = await fetch('/api/auth/register', {      // <<-- aquí ruta relativa
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-
     const result = await res.json();
-
     if (res.ok) {
       alert('¡Registro exitoso!');
-      const modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
-      modal.hide();
+      bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
     } else {
       alert(result.error || 'Error al registrarse');
-      console.warn(result);
     }
   } catch (err) {
     alert('Error de conexión al servidor');
@@ -123,37 +95,29 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
   }
 });
 
-// Inicio de sesión
+// ——— Inicio de sesión ———
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-
-  const email = document.getElementById('email').value.trim();
+  const email    = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
-
   if (!email || !password) {
-    alert('Por favor, ingresa correo y contraseña.');
-    return;
+    return alert('Por favor, ingresa correo y contraseña.');
   }
 
   try {
-    const res = await fetch('http://localhost:3000/api/auth/login', {
+    const res = await fetch('/api/auth/login', {       // <<-- ruta relativa
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-
     const data = await res.json();
-
     if (res.ok) {
       alert('¡Inicio de sesión exitoso!');
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.usuario));
-      //location.reload();
-
       if (data.usuario.rol === 'admin') {
         window.location.href = 'homeAdmin.html';
       } else {
-        //window.location.href = 'home.html';
         location.reload();
       }
     } else {
@@ -163,185 +127,91 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     alert('No se pudo conectar con el servidor.');
     console.error(err);
   }
-
 });
 
-// Cargar perfil del usuario cuando se abre el modal
+// ——— Carga y actualización de perfil ———
 async function cargarPerfilUsuario() {
   const token = localStorage.getItem('token');
   if (!token) return;
-
   try {
-    const res = await fetch('http://localhost:3000/api/usuarios/perfil', {
-      method: 'GET',
+    const res = await fetch('/api/usuarios/perfil', {   // <<-- relativo
       headers: { 'Authorization': `Bearer ${token}` }
     });
-
-    if (!res.ok) {
-      const errData = await res.json();
-      throw new Error(errData.error || 'Error al obtener perfil');
-    }
-
+    if (!res.ok) throw await res.json();
     const usuario = await res.json();
-
-    document.getElementById('profilePreview').src = usuario.imagen || 'https://via.placeholder.com/100';
-    document.getElementById('editPhoto').value = usuario.imagen || '';
+    document.getElementById('profilePreview').src  = usuario.imagen || 'https://via.placeholder.com/100';
+    document.getElementById('editPhoto').value    = usuario.imagen || '';
     document.getElementById('editUsername').value = usuario.username || '';
-    document.getElementById('editPhone').value = usuario.telefono || '';
+    document.getElementById('editPhone').value    = usuario.telefono || '';
   } catch (err) {
     console.error('Error al cargar el perfil:', err);
-    alert(`Error: ${err.message}`);
+    alert(`Error: ${err.error || err.message}`);
   }
 }
 
-// Actualizar perfil del usuario
 async function actualizarPerfil(e) {
   e.preventDefault();
-
   const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Debes iniciar sesión para actualizar tu perfil');
-    return;
-  }
-
-  const datosActualizados = {
-    imagen: document.getElementById('editPhoto').value.trim(),
+  if (!token) return alert('Debes iniciar sesión para actualizar tu perfil');
+  const datos = {
+    imagen:   document.getElementById('editPhoto').value.trim(),
     username: document.getElementById('editUsername').value.trim(),
     telefono: document.getElementById('editPhone').value.trim()
   };
-
-  const nuevaPassword = document.getElementById('editPassword').value.trim();
-  if (nuevaPassword) {
-    datosActualizados.password = nuevaPassword;
-  }
+  const newPw = document.getElementById('editPassword').value.trim();
+  if (newPw) datos.password = newPw;
 
   try {
-    const res = await fetch('http://localhost:3000/api/usuarios/perfil', {
+    const res = await fetch('/api/usuarios/perfil', { // <<-- relativo
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(datosActualizados)
+      body: JSON.stringify(datos)
     });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.error || 'No se pudo actualizar');
-    }
-
+    if (!res.ok) throw await res.json();
     alert('¡Perfil actualizado con éxito!');
     bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
   } catch (err) {
     console.error('Error al actualizar perfil:', err);
-    alert(`Error al actualizar perfil: ${err.message}`);
+    alert(`Error al actualizar perfil: ${err.error || err.message}`);
   }
 }
 
-// Conectar el form y el evento del modal
+// vincular modal y form de perfil
 document.addEventListener('DOMContentLoaded', () => {
-  const profileForm = document.getElementById('profileForm');
-  if (profileForm) profileForm.addEventListener('submit', actualizarPerfil);
-
-  const profileModal = document.getElementById('profileModal');
-  if (profileModal) {
-    profileModal.addEventListener('show.bs.modal', cargarPerfilUsuario);
-  }
+  document.getElementById('profileForm')?.addEventListener('submit', actualizarPerfil);
+  document.getElementById('profileModal')
+    ?.addEventListener('show.bs.modal', cargarPerfilUsuario);
+  document.getElementById('logoutBtn')?.addEventListener('click', cerrarSesion);
+  document.getElementById('editPhoto')?.addEventListener('input', () => {
+    const url = document.getElementById('editPhoto').value;
+    if (url) document.getElementById('profilePreview').src = url;
+  });
 });
 
-
-// Función para cerrar sesión
-function cerrarSesion() {
-  // Eliminar el token del almacenamiento local
-  localStorage.removeItem('token');
-  
-}
-
-
-
-// Función para mostrar vista previa de la foto de perfil
-function actualizarVistaPrevia() {
-  const url = document.getElementById('editPhoto').value;
-  if (url) {
-    document.getElementById('profilePreview').src = url;
-  }
-}
-
-// Inicializar los eventos cuando se carga el DOM
-document.addEventListener('DOMContentLoaded', () => {
-  // Configurar el formulario de perfil
-  const profileForm = document.getElementById('profileForm');
-  if (profileForm) {
-    profileForm.addEventListener('submit', actualizarPerfil);
-  }
-  
-  // Configurar el botón de cerrar sesión
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', cerrarSesion);
-  }
-  
-  // Configurar la vista previa de la foto de perfil
-  const editPhotoInput = document.getElementById('editPhoto');
-  if (editPhotoInput) {
-    editPhotoInput.addEventListener('input', actualizarVistaPrevia);
-  }
-  
-  // Cargar los datos del perfil cuando se abre el modal
-  const profileModal = document.getElementById('profileModal');
-  if (profileModal) {
-    profileModal.addEventListener('show.bs.modal', cargarPerfilUsuario);
-  }
-});
-
+// ——— Filtrar mascotas ———
 async function filtrarMascotas() {
-  // 1) Recoger filtros…
   const campos = ['Tipo','Edad','Sexo','Vacunado','Esterilizado','Estado'];
   const filtros = {};
   campos.forEach(c => {
-    const el = document.getElementById('filter' + c);
+    const el = document.getElementById('filter'+c);
     if (el?.value.trim()) {
-      filtros[
-        c
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-      ] = el.value.trim();
+      filtros[c.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')] = el.value.trim();
     }
   });
-
   const qs  = new URLSearchParams(filtros).toString();
-  const url = `http://localhost:3000/api/mascotas?${qs}`;
-  console.log('🔍 Fetching:', url);
-
+  const url = `/api/mascotas?${qs}`;                  // <<-- relativo
   try {
     const token   = localStorage.getItem('token');
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
     const res     = await fetch(url, { headers });
-
-    if (!res.ok) {
-      console.error('Error HTTP:', res.status, await res.text());
-      return;
-    }
-
+    if (!res.ok) return console.error('Error HTTP:', res.status, await res.text());
     const json = await res.json();
-    console.log('Respuesta completa de /api/mascotas:', json);
-
-    // 2) Extraer el array correcto de la respuesta paginada
-    const mascotasArray = Array.isArray(json)
-      ? json
-      : Array.isArray(json.data)
-        ? json.data
-        : [];
-
-    if (!mascotasArray.length) {
-      console.warn('No hay mascotas con esos filtros');
-    }
-
-    // 3) Pintar las tarjetas
+    const mascotasArray = Array.isArray(json) ? json : (Array.isArray(json.data) ? json.data : []);
     mostrarMascotas(mascotasArray);
-
   } catch (err) {
     console.error('Error de red o JS:', err);
   }
@@ -355,69 +225,54 @@ function mostrarMascotas(arr) {
     const card = document.createElement('div');
     card.className = 'col-md-4 mb-4';
     card.innerHTML = `
-  <div class="card">
-    <img src="${m.imagen}" class="card-img-top" alt="${m.nombre}">
-    <div class="card-body">
-      <h5 class="card-title">${m.nombre} (${m.tipo})</h5>
-      <p class="card-text">
-        Raza: ${m.raza}<br>
-        Edad: ${m.edad} años<br>
-        Sexo: ${m.sexo}<br>
-        Color: ${m.color}<br>
-        Vacunado: ${m.vacunado}<br>
-        Esterilizado: ${m.esterilizado}<br>
-        Estado: ${m.estado}<br>
-        Locación: ${m.locacion}
-      </p>
-      <button class="btn btn-delifesti" data-bs-toggle="modal" data-bs-target="#adopcionModal" data-mascota-id="${m._id}">
-        Iniciar proceso de adopción
-      </button>
-    </div>
-  </div>`;
+      <div class="card">
+        <img src="${m.imagen}" class="card-img-top" alt="${m.nombre}">
+        <div class="card-body">
+          <h5 class="card-title">${m.nombre} (${m.tipo})</h5>
+          <p class="card-text">
+            Raza: ${m.raza}<br>
+            Edad: ${m.edad} años<br>
+            Sexo: ${m.sexo}<br>
+            Color: ${m.color}<br>
+            Vacunado: ${m.vacunado}<br>
+            Esterilizado: ${m.esterilizado}<br>
+            Estado: ${m.estado}<br>
+            Locación: ${m.locacion}
+          </p>
+          <button class="btn btn-delifesti" data-bs-toggle="modal"
+                  data-bs-target="#adopcionModal"
+                  data-mascota-id="${m._id}">
+            Iniciar proceso de adopción
+          </button>
+        </div>
+      </div>`;
     cont.appendChild(card);
   });
 }
 
-document
-  .getElementById('applyFilters')
-  .addEventListener('click', filtrarMascotas);
+document.getElementById('applyFilters')?.addEventListener('click', filtrarMascotas);
 
-
+// ——— Solicitud de adopción ———
 document.getElementById('adopcionForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-
   const token = localStorage.getItem('token');
-  if (!token) {
-    alert('Debes iniciar sesión para adoptar.');
-    return;
-  }
+  if (!token) return alert('Debes iniciar sesión para adoptar.');
 
   const nombre  = document.getElementById('nombre').value.trim();
-  const email = document.getElementById('emailAdopcion').value.trim();
-  const motivo = document.getElementById('motivo').value.trim();
-
-  if (!mascotaSeleccionada) {
-    alert('No se ha seleccionado una mascota.');
-    return;
-  }
+  const email   = document.getElementById('emailAdopcion').value.trim();
+  const motivo  = document.getElementById('motivo').value.trim();
+  if (!mascotaSeleccionada) return alert('No se ha seleccionado una mascota.');
 
   try {
-    const res = await fetch('http://localhost:3000/api/adopciones', {
+    const res = await fetch('/api/adopciones', {      // <<-- relativo
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-        mascotaId: mascotaSeleccionada,
-        nombre,
-        email,
-        motivo
-      })
+      body: JSON.stringify({ mascotaId: mascotaSeleccionada, nombre, email, motivo })
     });
-
     const data = await res.json();
-
     if (res.ok) {
       alert('¡Solicitud de adopción enviada!');
       document.getElementById('adopcionForm').reset();
@@ -425,10 +280,8 @@ document.getElementById('adopcionForm')?.addEventListener('submit', async (e) =>
     } else {
       alert(data.error || 'No se pudo enviar la solicitud');
     }
-
   } catch (error) {
     console.error('Error al enviar solicitud:', error);
     alert('Error al conectar con el servidor.');
   }
 });
-

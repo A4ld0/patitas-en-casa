@@ -19,29 +19,31 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 2) Rutas públicas
+// 2) Tus rutas de API
 app.use('/api/mensaje-adopcion', mensajeAdopcionRouter);
 app.use('/api/auth',             authRoutes);
-
-// 3) Rutas protegidas
 app.use('/api/usuarios',   verificarToken, usuarioRoutes);
 app.use('/api/mascotas',   verificarToken, mascotasRoutes);
 app.use('/api/alarmas',    verificarToken, alarmasRoutes);
 app.use('/api/adopciones', verificarToken, adopcionesRoutes);
 
-// 4) History API Fallback
-//    – solo deja pasar /api/** tal cual
-//    – cualquier otra URL se reescribe a "/" internamente
+// 3) Define el path absoluto a public/
+const publicPath = path.join(__dirname, '../public');
+
+// 4) Sirve estáticos (JS, CSS, imágenes)
+app.use(express.static(publicPath));
+
+// 5) History API Fallback para SPA: reescribe cualquier ruta que no empiece por /api a /
 app.use(history({
   rewrites: [
     { from: /^\/api\/.*$/, to: context => context.parsedUrl.path }
   ]
 }));
 
-// 5) Servir estáticos (ahora sí) desde ../public
-app.use(express.static(path.join(__dirname, '../public')));
+// 6) De nuevo serve estáticos para que history encuentre index.html
+app.use(express.static(publicPath));
 
-// 6) Conectar a Mongo y arrancar
+// 7) Conecta a Mongo y arranca
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Conectado a MongoDB Atlas'))
   .catch(err => console.error('❌ Error conectando a MongoDB:', err));
