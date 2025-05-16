@@ -30,6 +30,13 @@ app.use('/api/adopciones', verificarToken, adopcionesRoutes);
 // 3) Define el path absoluto a public/
 const publicPath = path.join(__dirname, '../public');
 
+app.use((req, res, next) => {
+  if (req.path.endsWith('.js') || req.path.endsWith('.css')) {
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
+  }
+  next();
+});
+
 // 4) Sirve estáticos (JS, CSS, imágenes)
 app.use(express.static(publicPath));
 
