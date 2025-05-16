@@ -50,12 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   cargarDatosPerfil();
 
-  function cerrarSesion() {
+  logoutBtn?.addEventListener('click', () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('userProfile');
-    location.reload();
-  }
+    window.location.reload();
+  });
 });
 
 // ——— Registro de usuario ———
