@@ -131,7 +131,7 @@ function cerrarSesion() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   localStorage.removeItem('userProfile');
-  window.location.href = 'home.html';
+  window.location.href = 'index.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
